@@ -1,7 +1,7 @@
 # Meetings notes
 
 ## Meeting 1.
-* **DATE:**
+* **DATE:** 28.1.2025
 * **ASSISTANTS:**
 
 ### Minutes
@@ -9,6 +9,10 @@
 
 ### Action points
 *List here the actions points discussed with assistants*
+- Explain APIs reasoning more briefly, what it does, how it does it and why. aka motivation behind the project.
+- Clarify the diagram and logic
+- Improve description, is this mobile app, webapp?
+- Find the link which justifies that client is using the API. (It actually read on the page behind on the link.)
 
 
 
