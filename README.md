@@ -1,9 +1,9 @@
 # PWP SPRING 2025
-# PROJECT NAME
+# WatchList Web API
 # Group information
 * Student 1. Aleksanteri Kylmäaho  aleksanteri.kylmaaho@student.oulu.fi
 * Student 2. Joonas Kelloniemi niko.kelloniemi@student.oulu.fi
-* Student 3. Name and email
+* Student 3. Emil Kelhälä emil.kelhala@student.oulu.fi
 * Student 4. Name and email
 
 
