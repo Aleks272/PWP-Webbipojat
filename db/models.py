@@ -1,6 +1,6 @@
 import os
 from enum import Enum
-from bunnet import Document, init_bunnet, before_event, Insert
+from bunnet import Document, init_bunnet, before_event, Insert, Indexed
 from pydantic import Field
 from pymongo import MongoClient
 from typing import Optional
@@ -21,14 +21,9 @@ def get_next_index(collection):
         counter.insert()
     return counter.amount
 
-def check_uniqueness(collection: Document, check_property, value):
-    if collection.find_one({check_property:value}).run():
-        return False
-    return True
-
 class Users(Document):
     person_id: Optional[int] = Field(index=True, unique=True, default=None)
-    username: str = Field(unique=True)
+    username: Indexed(str, unique=True)
 
     class Settings:
         collection = "users"
@@ -36,8 +31,6 @@ class Users(Document):
     @before_event(Insert)
     def check_data(self):
         self.person_id = get_next_index("users")
-        if not check_uniqueness(Users, "username", self.username):
-            raise ValueError("Username must be unique")
 
 class ContentTypeEnum(str, Enum):
     movie = "movie"
@@ -45,7 +38,7 @@ class ContentTypeEnum(str, Enum):
 
 class Content(Document):
     content_id: Optional[int] = Field(index=True, unique=True, default=None)
-    name: str = Field(unique=True)
+    name: str = Indexed(unique=True)
     type: ContentTypeEnum
 
     class Settings:
@@ -54,8 +47,6 @@ class Content(Document):
     @before_event(Insert)
     def check_data(self):
         self.content_id = get_next_index("content")
-        if not check_uniqueness(Content, "name", self.name):
-            raise ValueError("Content name must be unique")
 
 class FollowerList(Document):
     person_id: int = Field(index=True, unique=True)
