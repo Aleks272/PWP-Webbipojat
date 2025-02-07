@@ -21,6 +21,11 @@ def get_next_index(collection):
         counter.insert()
     return counter.amount
 
+def check_uniqueness(collection: Document, check_property, value):
+    if collection.find_one({check_property:value}).run():
+        return False
+    return True
+
 class Users(Document):
     person_id: Optional[int] = Field(index=True, unique=True, default=None)
     username: str = Field(unique=True)
@@ -29,9 +34,10 @@ class Users(Document):
         collection = "users"
 
     @before_event(Insert)
-    def set_id(self):
+    def check_data(self):
         self.person_id = get_next_index("users")
-
+        if not check_uniqueness(Users, "username", self.username):
+            raise ValueError("Username must be unique")
 
 class ContentTypeEnum(str, Enum):
     movie = "movie"
