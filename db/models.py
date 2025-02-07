@@ -44,9 +44,18 @@ class ContentTypeEnum(str, Enum):
     series = "series"
 
 class Content(Document):
-    content_id: int = Field(index=True, unique=True)
+    content_id: Optional[int] = Field(index=True, unique=True, default=None)
     name: str = Field(unique=True)
     type: ContentTypeEnum
+
+    class Settings:
+        collection = "content"
+
+    @before_event(Insert)
+    def check_data(self):
+        self.content_id = get_next_index("content")
+        if not check_uniqueness(Content, "name", self.name):
+            raise ValueError("Content name must be unique")
 
 class FollowerList(Document):
     person_id: int = Field(index=True, unique=True)

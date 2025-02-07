@@ -5,14 +5,16 @@ users = [
     Users(username="Foo Bar"),
     Users(username="Elon Musk")
 ]
+# does not work with insert_many :-DDDD https://beanieodm.github.io/bunnet/tutorial/event-based-actions/
 for user in users:
     user.insert()
 
-content = [
+contents = [
     Content(content_id=1, name="Inception", type="movie"),
     Content(content_id=2, name="Deadpool", type="movie")
 ]
-Content.insert_many(content)
+for content in contents:
+    content.insert()
 
 
 # new_follower = FollowerList(person_id=1, following_id=3)
