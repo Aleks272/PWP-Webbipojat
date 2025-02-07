@@ -1,21 +1,24 @@
 from models import Users, Content, FollowerList, Publiclist, Privatelist
 
-# Example: Adding a user
-new_user = Users(person_id=1, username="john_doe")
-new_user.insert()
+users = [
+    Users(person_id=1, username="John Doe"),
+    Users(person_id=2, username="Foo Bar"),
+    Users(person_id=3, username="Elon Musk")
+]
+Users.insert_many(users)
 
-# Example: Adding content
-new_content = Content(content_id=1, name="Inception", type="movie")
-new_content.insert()
+content = [
+    Content(content_id=1, name="Inception", type="movie"),
+    Content(content_id=2, name="Deadpool", type="movie")
+]
+Content.insert_many(content)
 
-# Example: Adding a follower
-new_follower = FollowerList(person_id=1, following_id=2)
-new_follower.insert()
 
-# Example: Adding to public list
-new_publiclist = Publiclist(person_id=1, content_id=1, user_note="Great movie!")
-new_publiclist.insert()
+# new_follower = FollowerList(person_id=1, following_id=3)
+# new_follower.insert()
 
-# Example: Adding to private list
-new_privatelist = Privatelist(person_id=1, content_id=1, user_note="Watch again")
-new_privatelist.insert()
+# new_publiclist = Publiclist(person_id=1, content_id=1, user_note="Great movie!")
+# new_publiclist.insert()
+
+# new_privatelist = Privatelist(person_id=3, content_id=1, user_note="LIT AF")
+# new_privatelist.insert()
