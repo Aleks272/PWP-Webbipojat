@@ -38,7 +38,7 @@ class ContentTypeEnum(str, Enum):
 
 class Content(Document):
     content_id: Optional[int] = Field(index=True, unique=True, default=None)
-    name: str = Indexed(unique=True)
+    name: Indexed(str, unique=True)
     type: ContentTypeEnum
 
     class Settings:
@@ -49,18 +49,18 @@ class Content(Document):
         self.content_id = get_next_index("content")
 
 class FollowerList(Document):
-    person_id: int = Field(index=True, unique=True)
-    following_id: int = Field(index=True, unique=True)
+    person_id: Indexed(int, unique=True)
+    following_id: Indexed(int, unique=True)
 
 class Publiclist(Document):
-    person_id: int = Field(index=True, unique=True)
-    content_id: int = Field(index=True, unique=True)
-    user_note: str = Field(unique=False)
+    person_id: Indexed(int, unique=True)
+    content_id: Indexed(int, unique=True)
+    user_note: str
 
 class Privatelist(Document):
-    person_id: int = Field(index=True, unique=True)
-    content_id: int = Field(index=True, unique=True)
-    user_note: str = Field(unique=False)
+    person_id: Indexed(int, unique=True)
+    content_id: Indexed(int, unique=True)
+    user_note: str
 
 client = MongoClient(os.getenv("MONGODB_CONNECTION_STRING"))
 init_bunnet(database=client.db_name, document_models=[Users, Content, FollowerList, Publiclist, Privatelist, Counter])
