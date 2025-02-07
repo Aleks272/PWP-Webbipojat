@@ -1,11 +1,12 @@
 from models import Users, Content, FollowerList, Publiclist, Privatelist
 
 users = [
-    Users(person_id=1, username="John Doe"),
-    Users(person_id=2, username="Foo Bar"),
-    Users(person_id=3, username="Elon Musk")
+    Users(username="John Doe"),
+    Users(username="Foo Bar"),
+    Users(username="Elon Musk")
 ]
-Users.insert_many(users)
+for user in users:
+    user.insert()
 
 content = [
     Content(content_id=1, name="Inception", type="movie"),
