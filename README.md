@@ -16,4 +16,6 @@ After cloning repo
 
 - pip install -r requirements.txt
 
-- running mockdata.py initializes the database and populates it
+- running mockdata.py initializes the database and populates it (database needs to be empty for this)
+
+- After running mockdata.py, data can be visually inspected from MongoDB Atlas project (need access)
