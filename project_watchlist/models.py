@@ -1,5 +1,5 @@
 import os
-from mongoengine import Document, StringField, SequenceField, EnumField, IntField, connect, ValidationError
+from mongoengine import Document, StringField, BooleanField, SequenceField, EnumField, IntField, connect, ValidationError
 from enum import Enum
 from dotenv import load_dotenv
 load_dotenv()
@@ -28,18 +28,9 @@ class FollowerList(Document):
         ]
     }
 
-class PublicList(Document):
+class Watchlist(Document):
     user_note = StringField()
-    person_id = IntField()
-    content_id = IntField()
-    meta = {
-        'indexes': [
-            {'fields': ('person_id', 'content_id'), 'unique': True}
-        ]
-    }
-
-class PrivateList(Document):
-    user_note = StringField()
+    public_entry = BooleanField()
     person_id = IntField()
     content_id = IntField()
     meta = {
