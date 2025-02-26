@@ -3,7 +3,7 @@ from flask_restful import Resource
 from jsonschema import validate, ValidationError
 from werkzeug.exceptions import NotFound, Conflict, BadRequest, UnsupportedMediaType
 from werkzeug.routing import BaseConverter
-from models import Users
+from project_watchlist.models import Users
 import mongoengine
 
 class UserConverter(BaseConverter):
