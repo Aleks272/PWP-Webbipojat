@@ -1,10 +1,5 @@
-import os
-from mongoengine import Document, StringField, BooleanField, SequenceField, EnumField, IntField, connect, ValidationError
+from mongoengine import Document, StringField, BooleanField, SequenceField, EnumField, IntField, ValidationError
 from enum import Enum
-from dotenv import load_dotenv
-load_dotenv()
-
-connect(host=os.getenv("MONGODB_CONNECTION_STRING"), name="db")
 
 class Users(Document):
     person_id = SequenceField()
