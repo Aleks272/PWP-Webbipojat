@@ -70,3 +70,5 @@ class UserCollection(Resource):
             abort(400, "Incomplete request - missing fields")
         except mongoengine.ValidationError:
             abort(400, "Database validation error")
+        except mongoengine.NotUniqueError:
+            abort(400, "User already exists")
