@@ -1,4 +1,4 @@
-from models import Users, Content, FollowerList, PublicList, PrivateList, ContentType
+from project_watchlist.models import Users, Content, FollowerList, PublicList, PrivateList, ContentType
 
 users = [
     Users(username="John Doe"),
