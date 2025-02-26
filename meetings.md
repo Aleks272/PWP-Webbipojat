@@ -22,15 +22,20 @@ The process of adding movies and series to the database of the API was discussed
 
 
 ## Meeting 2.
-* **DATE:**
+* **DATE:** 12.2.2025
 * **ASSISTANTS:**
 
 ### Minutes
 *Summary of what was discussed during the meeting*
 
+Database documentation looks good, models are well defined, but `Content` is missing the genre-field defined in the plan. Instead of having two tables for public and private movie lists, it could be better to just have one model for list and set a private/public specifier for every list.
+
 ### Action points
 *List here the actions points discussed with assistants*
 
+- Instead of having PublicList and PrivateList separately, save movie/series entries to one list and have a boolean value specifying whether the list is public or private.
+- Update previous plans in wiki according to changes made in later stages of the project.
+- Include genre-field in Content-database model
 
 
 
