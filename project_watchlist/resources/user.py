@@ -44,7 +44,7 @@ class UserCollection(Resource):
     def get(self):
         pass
 
-    def post(self, user):
+    def post(self):
         if not request.json:
             abort(415, "unsupported media type")
         try:
