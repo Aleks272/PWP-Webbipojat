@@ -5,6 +5,7 @@ from werkzeug.exceptions import NotFound, Conflict, BadRequest, UnsupportedMedia
 from werkzeug.routing import BaseConverter
 from project_watchlist.models import Users
 import mongoengine
+from project_watchlist.watchlist_api import api
 
 class UserConverter(BaseConverter):
 
@@ -57,9 +58,9 @@ class UserCollection(Resource):
                 "New user added", 
                 status=201, 
                 mimetype="application/json",
-                headers={"Location": url_for(
-                    "api.useritem", 
-                    person_id=new_User.person_id
+                headers={"Location": api.url_for(
+                    UserItem,
+                    user=new_User
                     )
                 }
             )
