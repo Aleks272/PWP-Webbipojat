@@ -9,7 +9,6 @@ class WatchlistItem(Resource):
         pass
 
     def put(self):
-        # testikommentti
         pass
 
     def delete(self):
