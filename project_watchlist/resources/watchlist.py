@@ -20,8 +20,15 @@ class WatchlistItem(Resource):
 class WatchlistCollection(Resource):
     def get(self, user):
         if user is None:
-            raise NotFound
+            raise NotFound("User not found")
         person_id = user.person_id
+        watchlist_entries = Watchlist.objects(person_id=person_id)
+        content_ids = []
+        for entry in watchlist_entries:
+            content_ids.append(entry)
+
+        body = {"Watchlist content": []}
+
 
     def post(self):
         pass
