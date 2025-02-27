@@ -4,6 +4,13 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 from project_watchlist.models import Users, Content, FollowerList, Watchlist, ContentType
 
+from mongoengine import connect
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+connect(host=os.getenv("MONGODB_CONNECTION_STRING"), name="test_db")
+
 users = [
     Users(username="John Doe"),
     Users(username="Foo Bar"),
