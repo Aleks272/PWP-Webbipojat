@@ -62,7 +62,7 @@ new_entry = Watchlist(person_id=person, content_id=content, user_note="Not ok", 
 new_entry.save()
 
 #WatchlistPrivate2
-person = Users.objects(username="Elon Musk").first().person_id
+person = Users.objects(username="John Doe").first().person_id
 content = Content.objects(name="Inception").first().content_id
 new_entry = Watchlist(person_id=person, content_id=content, user_note="Tesla Model SS", public_entry=False)
 new_entry.save()

@@ -4,6 +4,8 @@ from jsonschema import validate, ValidationError
 from werkzeug.exceptions import NotFound, Conflict, BadRequest, UnsupportedMediaType
 from werkzeug.routing import BaseConverter
 
+from project_watchlist.models import Watchlist, Users
+
 class WatchlistItem(Resource):
     def get(self):
         pass
@@ -16,8 +18,10 @@ class WatchlistItem(Resource):
 
 
 class WatchlistCollection(Resource):
-    def get(self):
-        pass
+    def get(self, user):
+        if user is None:
+            raise NotFound
+        person_id = user.person_id
 
     def post(self):
         pass
