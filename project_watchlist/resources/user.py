@@ -1,4 +1,4 @@
-from flask import Response, request, abort, url_for
+from flask import Response, json, request, abort, url_for
 from flask_restful import Resource
 from jsonschema import validate, ValidationError
 from werkzeug.exceptions import NotFound, Conflict, BadRequest, UnsupportedMediaType
@@ -43,13 +43,20 @@ class UserItem(Resource):
 
 class UserCollection(Resource):
     def get(self):
-        pass
+        body = {"users": []}
+        for db_user in Users.objects():
+            item = {
+                "username": db_user.username}
+            body["users"].append(item)
+            
+        return Response(json.dumps(body), 200, mimetype="application/json")
 
     def post(self):
         if not request.json:
             abort(415, "unsupported media type")
         try:
             validate(request.json, UserItem.json_schema())
+
             new_User = Users(
                 username=request.json["username"]
             )
