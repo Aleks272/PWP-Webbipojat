@@ -19,14 +19,48 @@ class UserConverter(BaseConverter):
         return str(value.person_id)
 
 class UserItem(Resource):
-    def get(self):
-        pass
+    def get(self, username):
+        db_user = Users.objects(username=username).first()
+        if db_user is None:
+            raise NotFound
+        return Response(json.dumps({
+                "username": db_user.username
+            }),
+            200,
+            mimetype="application/json"
+        )
+    def put(self, username):
+        if not request.json:
+            raise UnsupportedMediaType
+        try:
+            validate(request.json, UserItem.json_schema())
+            db_user = Users.objects(username=username).first()
+            if db_user is None:
+                raise NotFound
+            db_user.username = request.json["username"]
+            db_user.save()
+            return Response(
+                "User updated",
+                status=200,
+                mimetype="application/json"
+            )
+        except ValidationError as e:
+            abort(400, str(e))
+        except KeyError:
+            abort(400, "Incomplete request - missing fields")
+        except mongoengine.ValidationError:
+            abort(400, "Database validation error")
 
-    def put(self):
-        pass
-
-    def delete(self):
-        pass
+    def delete(self, username):
+        db_user = Users.objects(username=username).first()
+        if db_user is None:
+            raise NotFound
+        db_user.delete()
+        return Response(
+            "User deleted",
+            status=200,
+            mimetype="application/json"
+        )
 
     @staticmethod
     def json_schema():
