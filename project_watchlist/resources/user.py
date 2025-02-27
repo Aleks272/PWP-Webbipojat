@@ -10,35 +10,29 @@ from project_watchlist.watchlist_api import api
 class UserConverter(BaseConverter):
 
     def to_python(self, value):
-        db_user = Users.objects(person_id=value).first()
+        db_user = Users.objects(username=value).first()
         if db_user is None:
             raise NotFound
         return db_user
 
     def to_url(self, value):
-        return str(value.person_id)
+        return str(value.username)
 
 class UserItem(Resource):
-    def get(self, username):
-        db_user = Users.objects(username=username).first()
-        if db_user is None:
-            raise NotFound
+    def get(self, user):
         return Response(json.dumps({
-                "username": db_user.username
+                "username": user.username
             }),
             200,
             mimetype="application/json"
         )
-    def put(self, username):
+    def put(self, user):
         if not request.json:
             raise UnsupportedMediaType
         try:
             validate(request.json, UserItem.json_schema())
-            db_user = Users.objects(username=username).first()
-            if db_user is None:
-                raise NotFound
-            db_user.username = request.json["username"]
-            db_user.save()
+            user.username = request.json["username"]
+            user.save()
             return Response(
                 "User updated",
                 status=200,
@@ -51,11 +45,8 @@ class UserItem(Resource):
         except mongoengine.ValidationError:
             abort(400, "Database validation error")
 
-    def delete(self, username):
-        db_user = Users.objects(username=username).first()
-        if db_user is None:
-            raise NotFound
-        db_user.delete()
+    def delete(self, user):
+        user.delete()
         return Response(
             "User deleted",
             status=200,
