@@ -4,6 +4,7 @@ from enum import Enum
 class Users(Document):
     person_id = SequenceField()
     username = StringField(unique=True)
+    email = StringField(unique=True)
 
 class ContentType(Enum):
     MOVIE = 'movie'
