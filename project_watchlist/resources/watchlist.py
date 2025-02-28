@@ -36,7 +36,7 @@ class WatchlistCollection(Resource):
             watchlist.append(
                 {
                     "content": content.name,
-                    "content_type": content.content_type
+                    "content_type": content.content_type.name
                 }
             )
 
