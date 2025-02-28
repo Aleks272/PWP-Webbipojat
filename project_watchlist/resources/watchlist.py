@@ -99,10 +99,14 @@ class WatchlistCollection(Resource):
             validate(request.json, WatchlistItem.json_schema())
 
             #check that all content id's exist
+            on_list = []
             for content_id in request.json["content_ids"]:
                 db_content = Content.objects(content_id=content_id)
                 if not db_content:
                     abort(400, f"Content with id {content_id} does not exist")
+                if content_id in on_list:
+                    abort(400, f"Duplicate content id {content_id}")
+                on_list.append(content_id)
             
             new_watchlist = Watchlist(
                 user_note=request.json["user_note"],
