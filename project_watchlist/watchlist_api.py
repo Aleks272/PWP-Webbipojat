@@ -16,4 +16,4 @@ from project_watchlist.resources.watchlist import WatchlistCollection
 app.url_map.converters["user"] = UserConverter
 api.add_resource(UserItem, "/api/users/<user:user>/")
 api.add_resource(UserCollection, "/api/users/")
-api.add_resource(WatchlistCollection, "/api/users/<user:user>/watchlist")
+api.add_resource(WatchlistCollection, "/api/users/<user:user>/watchlist/")
