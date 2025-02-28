@@ -65,8 +65,13 @@ class WatchlistItem(Resource):
         except mongoengine.ValidationError:
             abort(400, "Database validation error")
 
-    def delete(self):
-        pass
+    def delete(self, watchlist):
+        watchlist.delete()
+        return Response(
+            "Watchlist deleted",
+            status=200,
+            mimetype="application/json"
+        )
 
     @staticmethod
     def json_schema():
