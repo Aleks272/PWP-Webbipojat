@@ -35,7 +35,35 @@ class WatchlistItem(Resource):
 
     @staticmethod
     def json_schema():
-        pass
+        schema = {
+            "type": "object",
+            "required": ["watchlist_id", "person_id", "content_ids"]
+        }
+        properties = schema["properties"] = {}
+        properties["watchlist_id"] = {
+            "description": "The id of this watchlist",
+            "type": "number"
+        }
+        properties["person_id"] = {
+            "description": "The id of the person who owns this watchlist",
+            "type": "number",
+        }
+        properties["content_ids"] = {
+            "description": "id's of the content belonging to this list",
+            "type": "array",
+            "items": {
+                "type": "number"
+            }
+        }
+        properties["user_note"] = {
+            "description": "Note entered by user",
+            "type": "string"
+        }
+        properties["public_entry"] = {
+            "description": "Specifies whether or not this list is public",
+            "type": "boolean"
+        }
+        return schema
 
 class WatchlistCollection(Resource):
 
