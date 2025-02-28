@@ -68,11 +68,13 @@ class UserItem(Resource):
         properties = schema["properties"] = {}
         properties["username"] = {
             "description": "Username",
-            "type": "string"
+            "type": "string",
+            "pattern": "^[^\\s]*$" # No whitespace allowed
         }
         properties["email"] = {
             "description": "Email",
-            "type": "string"
+            "type": "string",
+            "pattern": "^[^\\s]*$" # No whitespace allowed
         }
         return schema
 
