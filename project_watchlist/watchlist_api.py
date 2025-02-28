@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-connect(host=os.getenv("MONGODB_CONNECTION_STRING"), name="db")
+connect(host=os.getenv("MONGODB_CONNECTION_STRING"), name="test_db")
 
 app = Flask(__name__)
 api = Api(app)
