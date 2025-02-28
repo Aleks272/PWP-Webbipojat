@@ -8,7 +8,7 @@ from project_watchlist.models import Watchlist, Users, Content
 
 class WatchlistConverter(BaseConverter):
     def to_python(self, value):
-        db_watchlist = Content.objects(content_id=value).first()
+        db_watchlist = Watchlist.objects(watchlist_id=value).first()
         if db_watchlist is None:
             raise NotFound
         return db_watchlist
@@ -17,8 +17,15 @@ class WatchlistConverter(BaseConverter):
         return str(value.watchlist_id)
 
 class WatchlistItem(Resource):
-    def get(self):
-        pass
+    def get(self, watchlist):
+        """
+        Get a watchlist by its id
+        """
+        return Response(
+            json.dumps(watchlist.to_json()),
+            200,
+            mimetype="application/json"
+        )
 
     def put(self):
         pass
