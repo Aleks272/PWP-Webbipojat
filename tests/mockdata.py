@@ -11,6 +11,8 @@ from dotenv import load_dotenv
 load_dotenv()
 connect(host=os.getenv("MONGODB_CONNECTION_STRING"), name="test_db")
 
+# Populates the database with mock data
+
 users = [
     Users(username="johndoe", email="john.doe@gmail.com"),
     Users(username="foobar", email="foobar@icloud.com"),
