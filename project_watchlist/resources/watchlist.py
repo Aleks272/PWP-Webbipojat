@@ -28,20 +28,7 @@ class WatchlistItem(Resource):
 
     @staticmethod
     def json_schema():
-        schema = {
-            "type": "object",
-            "required": ["username", "email"]
-        }
-        properties = schema["properties"] = {}
-        properties["username"] = {
-            "description": "Username",
-            "type": "string"
-        }
-        properties["email"] = {
-            "description": "Email",
-            "type": "string"
-        }
-        return schema
+        pass
 
 class WatchlistCollection(Resource):
     def get(self, user):
