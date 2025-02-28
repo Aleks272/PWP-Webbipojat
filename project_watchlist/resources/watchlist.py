@@ -1,11 +1,11 @@
-from flask import Response, json, request, abort, url_for
+from flask import Response, json, request, abort
 from flask_restful import Resource
 from jsonschema import validate, ValidationError
-from werkzeug.exceptions import NotFound, Conflict, BadRequest, UnsupportedMediaType
+from werkzeug.exceptions import NotFound
 from werkzeug.routing import BaseConverter
 import mongoengine
 
-from project_watchlist.models import Watchlist, Users, Content
+from project_watchlist.models import Watchlist, Content
 from project_watchlist.watchlist_api import api
 
 class WatchlistConverter(BaseConverter):
