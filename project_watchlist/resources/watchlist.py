@@ -1,12 +1,26 @@
 from flask import Response, json, request, abort
 from flask_restful import Resource
 from jsonschema import validate, ValidationError
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, UnsupportedMediaType
 from werkzeug.routing import BaseConverter
 import mongoengine
 
 from project_watchlist.models import Watchlist, Content
 from project_watchlist.watchlist_api import api
+
+def validate_content(given_ids):
+    """
+    Checks if all of the given content id's are present in database
+    and that there are no duplicates in the list 
+    """
+    on_list = []
+    for content_id in given_ids:
+        db_content = Content.objects(content_id=content_id)
+        if not db_content:
+            abort(400, f"Content with id {content_id} does not exist")
+        if content_id in on_list:
+            abort(400, f"Duplicate content id {content_id}")
+        on_list.append(content_id)
 
 class WatchlistConverter(BaseConverter):
     def to_python(self, value):
@@ -29,8 +43,27 @@ class WatchlistItem(Resource):
             mimetype="application/json"
         )
 
-    def put(self):
-        pass
+    def put(self, watchlist):
+        if not request.json:
+            raise UnsupportedMediaType
+        try:
+            validate(request.json, WatchlistItem.json_schema())
+            validate_content(request.json["content_ids"])
+            watchlist.content_ids = request.json["content_ids"]
+            watchlist.user_note = request.json["user_note"]
+            watchlist.public_entry = request.json["public_entry"]
+            watchlist.save()
+            return Response(
+                "Watchlist updated",
+                status=200,
+                mimetype="application/json"
+            )
+        except ValidationError as e:
+            abort(400, str(e))
+        except KeyError:
+            abort(400, "Incomplete request - missing fields")
+        except mongoengine.ValidationError:
+            abort(400, "Database validation error")
 
     def delete(self):
         pass
@@ -94,19 +127,12 @@ class WatchlistCollection(Resource):
         Create a new watchlist for the user
         """
         if not request.json:
-            abort(415, "unsupported media type")
+            raise UnsupportedMediaType
         try:
             validate(request.json, WatchlistItem.json_schema())
 
             #check that all content id's exist
-            on_list = []
-            for content_id in request.json["content_ids"]:
-                db_content = Content.objects(content_id=content_id)
-                if not db_content:
-                    abort(400, f"Content with id {content_id} does not exist")
-                if content_id in on_list:
-                    abort(400, f"Duplicate content id {content_id}")
-                on_list.append(content_id)
+            validate_content(request.json["content_ids"])
             
             new_watchlist = Watchlist(
                 user_note=request.json["user_note"],
