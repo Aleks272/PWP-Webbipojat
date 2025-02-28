@@ -3,8 +3,10 @@ from flask_restful import Resource
 from jsonschema import validate, ValidationError
 from werkzeug.exceptions import NotFound, Conflict, BadRequest, UnsupportedMediaType
 from werkzeug.routing import BaseConverter
+import mongoengine
 
 from project_watchlist.models import Watchlist, Users, Content
+from project_watchlist.watchlist_api import api
 
 class WatchlistConverter(BaseConverter):
     def to_python(self, value):
@@ -37,7 +39,9 @@ class WatchlistItem(Resource):
     def json_schema():
         schema = {
             "type": "object",
-            "required": ["watchlist_id", "person_id", "content_ids"]
+            "required": ["content_ids",
+                         "user_note",
+                         "public_entry"]
         }
         properties = schema["properties"] = {}
         properties["watchlist_id"] = {
@@ -86,8 +90,40 @@ class WatchlistCollection(Resource):
                         mimetype="application/json")
 
     def post(self, user):
+        """
+        Create a new watchlist for the user
+        """
         if not request.json:
             abort(415, "unsupported media type")
-        if user is None:
-            abort(400, "User not found")
-        
+        try:
+            validate(request.json, WatchlistItem.json_schema())
+
+            #check that all content id's exist
+            for content_id in request.json["content_ids"]:
+                db_content = Content.objects(content_id=content_id)
+                if not db_content:
+                    abort(400, f"Content with id {content_id} does not exist")
+            
+            new_watchlist = Watchlist(
+                user_note=request.json["user_note"],
+                public_entry=request.json["public_entry"],
+                person_id=user.person_id,
+                content_ids=request.json["content_ids"]
+                )
+            Watchlist.objects.insert(new_watchlist)
+            return Response(
+                "New watchlist added", 
+                status=201, 
+                mimetype="application/json",
+                headers={"Location": api.url_for(
+                    WatchlistItem,
+                    watchlist=new_watchlist
+                    )
+                }
+            )
+        except ValidationError as e:
+            abort(400, str(e))
+        except KeyError:
+            abort(400, "Incomplete request - missing fields")
+        except mongoengine.ValidationError:
+            abort(400, "Database validation error")
