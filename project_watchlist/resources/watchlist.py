@@ -16,6 +16,22 @@ class WatchlistItem(Resource):
     def delete(self):
         pass
 
+    @staticmethod
+    def json_schema():
+        schema = {
+            "type": "object",
+            "required": ["username", "email"]
+        }
+        properties = schema["properties"] = {}
+        properties["username"] = {
+            "description": "Username",
+            "type": "string"
+        }
+        properties["email"] = {
+            "description": "Email",
+            "type": "string"
+        }
+        return schema
 
 class WatchlistCollection(Resource):
     def get(self, user):
@@ -46,5 +62,9 @@ class WatchlistCollection(Resource):
         }
         return Response(json.dumps(response_body), 200, mimetype="application/json")
 
-    def post(self):
-        pass
+    def post(self, user):
+        if not request.json:
+            abort(415, "unsupported media type")
+        if user is None:
+            abort(400, "User not found")
+        
