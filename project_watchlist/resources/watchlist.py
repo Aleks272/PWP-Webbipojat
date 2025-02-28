@@ -14,7 +14,7 @@ class WatchlistConverter(BaseConverter):
         return db_watchlist
 
     def to_url(self, value):
-        return str(value.content_id)
+        return str(value.watchlist_id)
 
 class WatchlistItem(Resource):
     def get(self):
@@ -31,33 +31,24 @@ class WatchlistItem(Resource):
         pass
 
 class WatchlistCollection(Resource):
+
     def get(self, user):
-        if user is None:
-            raise NotFound("User not found")
-        
+        """
+        Get all user's watchlists
+        """
         person_id = user.person_id
-        watchlist_entries = Watchlist.objects(person_id=person_id)
-
-        user_content_ids = []
-        for entry in watchlist_entries:
-            user_content_ids.append(entry.content_id)
-
-        user_content = Content.objects(content_id__in=user_content_ids)
-
-        watchlist = []
-        for content in user_content:
-            watchlist.append(
-                {
-                    "content": content.name,
-                    "content_type": content.content_type.name
-                }
-            )
-
-        response_body = {
-            "user": user.username,
-            "Watchlist": watchlist
+        # get all lists with user's id
+        watchlists = Watchlist.objects(person_id=person_id)
+        response = {
+            "watchlists": []
         }
-        return Response(json.dumps(response_body), 200, mimetype="application/json")
+        # Constructing the response, run through all lists
+        for watchlist in watchlists:
+            # Transforming the list to JSON and adding to response
+            response["watchlists"].append(watchlist.to_json())
+        return Response(json.dumps(response),
+                        200, 
+                        mimetype="application/json")
 
     def post(self, user):
         if not request.json:

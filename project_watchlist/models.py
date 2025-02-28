@@ -25,6 +25,13 @@ class Content(Document):
     name = StringField(unique=True)
     content_type = EnumField(ContentType)
 
+    def to_json(self):
+        return {
+            "content_id": self.content_id,
+            "name": self.name,
+            "content_type": self.content_type.name
+        }
+
 class FollowerList(Document):
     person_id = IntField()
     following_id = IntField()
@@ -40,3 +47,15 @@ class Watchlist(Document):
     public_entry = BooleanField()
     person_id = IntField()
     content_ids = ListField(IntField())
+
+    def to_json(self):
+        doc = {
+            "watchlist_id": self.watchlist_id,
+            "user_note": self.user_note,
+            "person_id": self.person_id,
+            "content": []
+        }
+        for content_id in self.content_ids:
+            content = Content.objects(content_id=content_id).first()
+            doc["content"].append(content.to_json())
+        return doc
