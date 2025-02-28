@@ -1,5 +1,5 @@
 import json
-from mongoengine import Document, StringField, BooleanField, SequenceField, EnumField, IntField, ValidationError
+from mongoengine import Document, StringField, BooleanField, SequenceField, EnumField, IntField, ValidationError, ListField
 from enum import Enum
 
 class Users(Document):
@@ -35,12 +35,8 @@ class FollowerList(Document):
     }
 
 class Watchlist(Document):
+    watchlist_id = SequenceField()
     user_note = StringField()
     public_entry = BooleanField()
     person_id = IntField()
-    content_id = IntField()
-    meta = {
-        'indexes': [
-            {'fields': ('person_id', 'content_id'), 'unique': True}
-        ]
-    }
+    content_ids = ListField(IntField())
