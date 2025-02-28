@@ -12,9 +12,9 @@ load_dotenv()
 connect(host=os.getenv("MONGODB_CONNECTION_STRING"), name="test_db")
 
 users = [
-    Users(username="John Doe"),
-    Users(username="Foo Bar"),
-    Users(username="Elon Musk")
+    Users(username="John Doe", email="john.doe@gmail.com"),
+    Users(username="Foo Bar", email="foobar@icloud.com"),
+    Users(username="Elon Musk", email="presidentmusk@whatdidyoudothisweek.gov")
 ]
 for user in users:
     user.validate()
