@@ -1,3 +1,4 @@
+import json
 from mongoengine import Document, StringField, BooleanField, SequenceField, EnumField, IntField, ValidationError
 from enum import Enum
 
@@ -5,6 +6,15 @@ class Users(Document):
     person_id = SequenceField()
     username = StringField(unique=True)
     email = StringField(unique=True)
+
+    def to_json(self):
+        return json.dumps(
+            {
+                "username": self.username,
+                "email": self.email,
+                "person_id": self.person_id
+            }
+        )
 
 class ContentType(Enum):
     MOVIE = 'movie'

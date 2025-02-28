@@ -6,6 +6,16 @@ from werkzeug.routing import BaseConverter
 
 from project_watchlist.models import Watchlist, Users, Content
 
+class WatchlistConverter(BaseConverter):
+    def to_python(self, value):
+        db_watchlist = Content.objects(content_id=value).first()
+        if db_watchlist is None:
+            raise NotFound
+        return db_watchlist
+
+    def to_url(self, value):
+        return str(value.content_id)
+
 class WatchlistItem(Resource):
     def get(self):
         pass
