@@ -19,3 +19,9 @@ After cloning repo
 - running mockdata.py initializes the database and populates it (database needs to be empty for this)
 
 - After running mockdata.py, data can be visually inspected from MongoDB Atlas project (needs access)
+
+# To do:
+- Unit test (ideas)
+    - (run) Every endpoint with legit values
+    - Error handling tests (invalid inputs, missing field)
+    - Tests for database validation rules

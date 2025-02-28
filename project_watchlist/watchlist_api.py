@@ -12,10 +12,14 @@ api = Api(app)
 
 from project_watchlist.resources.user import UserItem, UserConverter, UserCollection
 from project_watchlist.resources.watchlist import WatchlistCollection, WatchlistItem, WatchlistConverter
+from project_watchlist.resources.content import ContentItem, ContentConverter, ContentCollection
 
 app.url_map.converters["user"] = UserConverter
 app.url_map.converters["watchlist"] = WatchlistConverter
+app.url_map.converters["content"] = ContentConverter
 api.add_resource(UserItem, "/api/users/<user:user>/")
 api.add_resource(UserCollection, "/api/users/")
 api.add_resource(WatchlistCollection, "/api/users/<user:user>/watchlists/")
 api.add_resource(WatchlistItem, "/api/watchlists/<watchlist:watchlist>/")
+api.add_resource(ContentItem, "/api/content/<content:content>/")
+api.add_resource(ContentCollection, "/api/content/")
