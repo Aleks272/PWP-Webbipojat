@@ -22,10 +22,8 @@ class UserItem(Resource):
     # api route: /api/users/<username/
     # Get user details for user provided in URL (e.g. /api/users/johndoe/) )
     def get(self, user):
-        return Response(json.dumps({
-                "username": user.username,
-                "email": user.email
-            }),
+        return Response(
+            json.dumps(user.to_json()),
             200,
             mimetype="application/json"
         )
@@ -84,10 +82,7 @@ class UserCollection(Resource):
     def get(self):
         body = {"users": []}
         for db_user in Users.objects():
-            item = {
-                "username": db_user.username,
-                "email": db_user.email
-                }
+            item = db_user.to_json()
             body["users"].append(item)
             
         return Response(json.dumps(body), 200, mimetype="application/json")

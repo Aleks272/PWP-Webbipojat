@@ -8,13 +8,11 @@ class Users(Document):
     email = StringField(unique=True)
 
     def to_json(self):
-        return json.dumps(
-            {
+        return {
                 "username": self.username,
                 "email": self.email,
                 "person_id": self.person_id
             }
-        )
 
 class ContentType(Enum):
     MOVIE = 'movie'
