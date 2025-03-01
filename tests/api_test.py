@@ -52,13 +52,13 @@ class TestUserItem(object):
         response_body = json.loads(res.data)
         assert response_body["email"] == data["email"]
 
-    def test_modify_user_with_invalid_media_type(self, client):
+    def test_modify_user_with_unsupported_media_type(self, client):
         """
         Testing that modification fails with invalid media type
         """
         res = client.put(self.RESOURCE_URL,
                          data="testdata",
-                         headers=Headers({"Content-Type": "text/html"}))
+                         headers=Headers({"Content-Type": "text"}))
         assert res.status_code == 415
     
     def test_modify_user_with_missing_fields(self, client):
@@ -143,6 +143,22 @@ class TestUserCollection(object):
         res = client.post(self.RESOURCE_URL, json=data)
         assert res.status_code == 400
 
+    def test_create_user_with_missing_fields(self, client):
+        """
+        Test that we cannot create a user with missing fields
+        """
+        data = {
+            "username": "new_user2"
+        }
+        res = client.post(self.RESOURCE_URL, json=data)
+        assert res.status_code == 400
+
+    def test_create_user_with_unsupported_media_type(self, client):
+        res = client.post(self.RESOURCE_URL,
+                          data="test",
+                          headers=Headers({"Content-Type":"text"}))
+        assert res.status_code == 415
+
 class TestWatchListCollection(object):
     """
     Tests WatchlistCollection-resource
@@ -153,3 +169,69 @@ class TestWatchListCollection(object):
     def test_get(self, client):
         res = client.get(self.RESOURCE_URL)
         assert res.status_code == 200
+        response_body = json.loads(res.data)
+        watchlists = response_body["watchlists"]
+        # there should be content inside watchlists
+        assert len(watchlists) > 0
+    
+    def test_post_with_valid_data(self, client):
+        """
+        Create a watchlist with valid data
+        """
+        data = {
+            "user_note": "test note",
+            "public_entry": True,
+            "content_ids": [1,2]
+        }
+        res = client.post(self.RESOURCE_URL, json=data)
+        assert res.status_code == 201
+        #check that there is a valid location-header
+        assert res.headers["Location"]
+        # check that the resource actually exists and it has correct values
+        res = client.get(res.headers["Location"])
+        assert res.status_code == 200
+        response_body = json.loads(res.data)
+        assert response_body["user_note"] == data["user_note"]
+        assert response_body["public_entry"] == data["public_entry"]
+        assert response_body["content_ids"] == data["content_ids"]
+
+    def test_post_with_missing_fields(self, client):
+        """
+        Test that POSTing fails with missing fields
+        """
+        data = {
+            "user_note": "test note",
+            "public_entry": True
+        }
+        res = client.post(self.RESOURCE_URL, json=data)
+        assert res.status_code == 400
+
+    def test_post_with_duplicate_content(self, client):
+        """
+        Test that watchlist cannot be created with duplicate content id's
+        """
+        data = {
+            "user_note": "test note",
+            "public_entry": True,
+            "content_ids": [1,2,2]
+        }
+        res = client.post(self.RESOURCE_URL, json=data)
+        assert res.status_code == 400
+
+    def test_post_with_nonexistent_content(self, client):
+        """
+        Test that we cannot create a watchlist with content id that does not exist
+        """
+        data = {
+            "user_note": "test note",
+            "public_entry": True,
+            "content_ids": [1,100]
+        }
+        res = client.post(self.RESOURCE_URL, json=data)
+        assert res.status_code == 400
+
+    def test_post_with_unsupported_media_type(self, client):
+        res = client.post(self.RESOURCE_URL,
+                          data="test",
+                          headers=Headers({"Content-Type":"text"}))
+        assert res.status_code == 415
