@@ -27,7 +27,7 @@ To prepare for testing of the API, you should complete following steps:
 1. Run `mockdata.py` from `tests`-folder, this will populate the database with test data
 2. Install the application by running `pip install -e .` in the root folder of the project
 
-Now you are ready to run the test by moving to the `tests` folder and running the command `pytest`
+Now you are ready to run the test by moving to the `tests` folder and running the command `pytest --cov-report term-missing --cov=project_watchlist`
 
 # To do:
 - Unit test (ideas)
