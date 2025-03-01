@@ -27,7 +27,7 @@ class TestUserItem(object):
         """
         Test that GETting a nonexistent user returns 404
         """
-        res = client.get(self.RESOURCE_URL)
+        res = client.get(self.WRONG_RESOURCE_URL)
         assert res.status_code == 404
 
 class TestUserCollection(object):

@@ -10,10 +10,11 @@ def create_app(test_mode=False):
     db_name = "db"
     if test_mode:
         db_name = "test_db"
-    connect(host=os.getenv("MONGODB_CONNECTION_STRING"), name=db_name)
+    connect(host=os.getenv("MONGODB_CONNECTION_STRING"),
+            name=db_name,
+            uuidRepresentation="standard")
 
     from project_watchlist import watchlist_api
-    from project_watchlist import resources
     from project_watchlist.utils import UserConverter, WatchlistConverter, ContentConverter
     app.url_map.converters["user"] = UserConverter
     app.url_map.converters["watchlist"] = WatchlistConverter
