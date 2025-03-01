@@ -22,16 +22,6 @@ def validate_content(given_ids):
             abort(400, f"Duplicate content id {content_id}")
         on_list.append(content_id)
 
-class WatchlistConverter(BaseConverter):
-    def to_python(self, value):
-        db_watchlist = Watchlist.objects(watchlist_id=value).first()
-        if db_watchlist is None:
-            raise NotFound
-        return db_watchlist
-
-    def to_url(self, value):
-        return str(value.watchlist_id)
-
 class WatchlistItem(Resource):
     def get(self, watchlist):
         """

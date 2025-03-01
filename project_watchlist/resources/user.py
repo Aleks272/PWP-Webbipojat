@@ -7,17 +7,6 @@ from project_watchlist.models import Users
 import mongoengine
 from project_watchlist.watchlist_api import api
 
-class UserConverter(BaseConverter):
-    # Fetch user item from database by username
-    def to_python(self, value):
-        db_user = Users.objects(username=value).first()
-        if db_user is None:
-            raise NotFound
-        return db_user
-    # Convert username to URL
-    def to_url(self, value):
-        return str(value.username)
-
 class UserItem(Resource):
     # api route: /api/users/<username/
     # Get user details for user provided in URL (e.g. /api/users/johndoe/) )

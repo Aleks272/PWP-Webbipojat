@@ -8,16 +8,6 @@ import mongoengine
 from project_watchlist.models import Content, ContentType, Watchlist
 from project_watchlist.watchlist_api import api
 
-class ContentConverter(BaseConverter):
-    def to_python(self, value):
-        db_content = Content.objects(content_id=int(value)).first()
-        if db_content is None:
-            raise NotFound
-        return db_content
-    
-    def to_url(self, value):
-        return str(value.content_id)
-
 class ContentItem(Resource):
     def get(self, content):
         """

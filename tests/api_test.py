@@ -6,9 +6,7 @@ from project_watchlist import create_app
 def client():
     app = create_app(test_mode=True)
     app.testing = True
-    test_client = app.test_client()
-
-    yield test_client
+    yield app.test_client()
 
 class TestUserItem(object):
     """
@@ -18,9 +16,6 @@ class TestUserItem(object):
     WRONG_RESOURCE_URL = "/api/users/nonexistent/"
 
     def test_get_existing_user(self, client):
-        """
-        Tests that we can GET an existing user
-        """
         res = client.get(self.RESOURCE_URL)
         assert res.status_code == 200
         response_body = json.loads(res.data)
@@ -34,3 +29,31 @@ class TestUserItem(object):
         """
         res = client.get(self.RESOURCE_URL)
         assert res.status_code == 404
+
+class TestUserCollection(object):
+    """
+    Tests the user collection resource
+    """
+    RESOURCE_URL = "/api/users/"
+    def test_get(self, client):
+        res = client.get(self.RESOURCE_URL)
+        assert res.status_code == 200
+        users = json.loads(res.data)
+        # check that users-property exists
+        assert "users" in users
+        # check that every user has required properties
+        for user in users["users"]:
+            assert "username" in user
+            assert "email" in user
+            assert "person_id" in user
+
+class TestWatchListCollection(object):
+    """
+    Tests WatchlistCollection-resource
+    """
+
+    RESOURCE_URL = "/api/users/foobar/watchlists/"
+
+    def test_get(self, client):
+        res = client.get(self.RESOURCE_URL)
+        assert res.status_code == 200
