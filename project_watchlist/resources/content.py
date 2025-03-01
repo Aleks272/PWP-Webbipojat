@@ -1,8 +1,7 @@
 from flask import Response, json, request, abort
 from flask_restful import Resource
 from jsonschema import validate, ValidationError
-from werkzeug.routing import BaseConverter
-from werkzeug.exceptions import NotFound, UnsupportedMediaType
+from werkzeug.exceptions import UnsupportedMediaType
 import mongoengine
 
 from project_watchlist.models import Content, ContentType, Watchlist
