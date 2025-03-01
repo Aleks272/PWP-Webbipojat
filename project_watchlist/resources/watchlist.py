@@ -9,7 +9,7 @@ from project_watchlist.watchlist_api import api
 def validate_content(given_ids):
     """
     Checks if all of the given content id's are present in database
-    and that there are no duplicates in the list 
+    and that there are no duplicates in the list of given id's
     """
     on_list = []
     for content_id in given_ids:
@@ -21,6 +21,9 @@ def validate_content(given_ids):
         on_list.append(content_id)
 
 class WatchlistItem(Resource):
+    """
+    A resource to interact with a single watchlist
+    """
     def get(self, watchlist):
         """
         Get a watchlist by its id
@@ -32,6 +35,14 @@ class WatchlistItem(Resource):
         )
 
     def put(self, watchlist):
+        """
+        Modify a watchlist by giving the new data for the list in parameter watchlist.
+
+        :param watchlist: the watchlist item to be modified
+        :returns: a Response with status 200 and a success message 
+        :raises UnsupportedMediaType: if the request was not JSON
+        :raises HTTPException: if the request does not contain the needed fields
+        """
         if not request.json:
             raise UnsupportedMediaType
         try:
@@ -50,6 +61,12 @@ class WatchlistItem(Resource):
             abort(400, str(e))
 
     def delete(self, watchlist):
+        """
+        Delete a given watchlist
+
+        :param watchlist: the watchlist to be deleted
+        :returns: a Response with status code 200 and a message
+        """
         watchlist.delete()
         return Response(
             "Watchlist deleted",
@@ -59,6 +76,11 @@ class WatchlistItem(Resource):
 
     @staticmethod
     def json_schema():
+        """
+        Describes the JSON schema required for this Resource
+
+        :returns: A dictionary containing the definion of the JSON schema
+        """
         schema = {
             "type": "object",
             "required": ["content_ids",
@@ -92,7 +114,9 @@ class WatchlistItem(Resource):
         return schema
 
 class WatchlistCollection(Resource):
-
+    """
+    A resource to interact with a collection of watchlists
+    """
     def get(self, user):
         """
         Get all user's watchlists

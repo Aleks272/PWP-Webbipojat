@@ -8,6 +8,9 @@ from project_watchlist.models import Content, ContentType, Watchlist
 from project_watchlist.watchlist_api import api
 
 class ContentItem(Resource):
+    """
+    A resource to interact with a single Content item
+    """
     def get(self, content):
         """
         Get content based on id
@@ -62,6 +65,11 @@ class ContentItem(Resource):
 
     @staticmethod
     def json_schema():
+        """
+        Describes the JSON schema for this resource
+
+        :returns: a dictionary that contains the definition for the JSON schema
+        """
         schema = {
             "type": "object",
             "required": ["name", "content_type"]
@@ -79,6 +87,9 @@ class ContentItem(Resource):
         return schema
 
 class ContentCollection(Resource):
+    """
+    A resource to interact with a collection of Content items
+    """
     def get(self):
         """
         Get all content

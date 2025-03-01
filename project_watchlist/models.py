@@ -1,13 +1,29 @@
-import json
-from mongoengine import Document, StringField, BooleanField, SequenceField, EnumField, IntField, ValidationError, ListField
+"""
+This module contains the definitions for database models.
+"""
 from enum import Enum
+from mongoengine import (Document,
+                         StringField,
+                         BooleanField,
+                         SequenceField,
+                         EnumField,
+                         IntField,
+                         ListField)
 
 class Users(Document):
+    """
+    A Document that represents an API user
+    """
     person_id = SequenceField()
     username = StringField(unique=True)
     email = StringField(unique=True)
 
     def to_json(self):
+        """
+        Transforms this object into a JSON-ready dictionary
+
+        :returns: a dictionary with key-value pairs representing the fields and their values
+        """
         return {
                 "username": self.username,
                 "email": self.email,
@@ -15,15 +31,26 @@ class Users(Document):
             }
 
 class ContentType(Enum):
+    """
+    Enum that defines the type of a Content item
+    """
     MOVIE = 'movie'
     SERIES = 'series'
 
 class Content(Document):
+    """
+    A Document that represents a piece of Content (movie or series)
+    """
     content_id = SequenceField()
     name = StringField(unique=True)
     content_type = EnumField(ContentType)
 
     def to_json(self):
+        """
+        Transforms this object into a JSON-ready dictionary
+
+        :returns: a dictionary with key-value pairs representing the fields and their values
+        """
         return {
             "content_id": self.content_id,
             "name": self.name,
@@ -31,6 +58,9 @@ class Content(Document):
         }
 
 class FollowerList(Document):
+    """
+    A Document that keeps track of who follows who
+    """
     person_id = IntField()
     following_id = IntField()
     meta = {
@@ -40,6 +70,9 @@ class FollowerList(Document):
     }
 
 class Watchlist(Document):
+    """
+    A Document that represents a list of Content items, which belongs to a single user
+    """
     watchlist_id = SequenceField()
     user_note = StringField()
     public_entry = BooleanField()
@@ -47,6 +80,11 @@ class Watchlist(Document):
     content_ids = ListField(IntField())
 
     def to_json(self):
+        """
+        Transforms this object into a JSON-ready dictionary
+
+        :returns: a dictionary with key-value pairs representing the fields and their values
+        """
         doc = {
             "watchlist_id": self.watchlist_id,
             "user_note": self.user_note,
