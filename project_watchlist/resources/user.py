@@ -31,9 +31,7 @@ class UserItem(Resource):
             )
         except ValidationError as e:
             abort(400, str(e))
-        except KeyError:
-            abort(400, "Incomplete request - missing fields")
-        except mongoengine.ValidationError:
+        except mongoengine.NotUniqueError:
             abort(400, "Database validation error")
 
     # Delete user details for user provided in URL (e.g. /api/users/johndoe/)
