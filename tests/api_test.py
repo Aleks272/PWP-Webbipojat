@@ -413,3 +413,10 @@ class TestContentItem():
         """
         res = client.delete(self.WRONG_RESOURCE_URL)
         assert res.status_code == 404
+
+class TestContentCollection():
+    """
+    Tests for content collection resource
+    """
+
+    def test_get

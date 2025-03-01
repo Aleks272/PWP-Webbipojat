@@ -36,12 +36,6 @@ class ContentItem(Resource):
             )
         except ValidationError as e:
             abort(400, str(e))
-        except KeyError:
-            abort(400, "Incomplete request - missing fields")
-        except ValueError:
-            abort(400, "Invalid content type")
-        except mongoengine.ValidationError:
-            abort(400, "Database validation error")
     
     def delete(self, content):
         """
