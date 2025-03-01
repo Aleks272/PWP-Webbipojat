@@ -5,7 +5,7 @@ from werkzeug.routing import BaseConverter
 from werkzeug.exceptions import NotFound, UnsupportedMediaType
 import mongoengine
 
-from project_watchlist.models import Content, ContentType
+from project_watchlist.models import Content, ContentType, Watchlist
 from project_watchlist.watchlist_api import api
 
 class ContentConverter(BaseConverter):
@@ -58,6 +58,18 @@ class ContentItem(Resource):
         """
         Delete content
         """
+        # need to make sure that the content does not remain in any watchlist
+        # first, we get all our existing watchlists
+        watchlists = Watchlist.objects()
+        # then we loop through all the watchlists
+        for watchlist in watchlists:
+            # and all the content id's in that list:
+            for content_id in watchlist.content_ids:
+                # if this content id is the one being removed:
+                if content_id == content.content_id:
+                    # remove it from the watchlist and save it
+                    watchlist.content_ids.remove(content_id)
+                    watchlist.save()
         content.delete()
         return Response(
             "Content deleted",
