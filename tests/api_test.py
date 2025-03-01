@@ -231,3 +231,47 @@ class TestWatchListCollection(object):
                           data="test",
                           headers=Headers({"Content-Type":"text"}))
         assert res.status_code == 415
+
+class TestWatchListItem(object):
+
+    RESOURCE_URL = "/api/watchlists/1"
+    WRONG_RESOURCE_URL = "/api/watchlists/100"
+
+    def test_get_existing_watchlist(self, client):
+        """
+        Get an existing watchlist
+        """
+        res = client.get(self.RESOURCE_URL)
+        assert res.status_code == 200
+        # check that the watchlist contains needed properties
+        response_body = json.loads(res.data)
+        assert response_body["watchlist_id"]
+        assert response_body["user_note"]
+        assert response_body["person_id"]
+        assert response_body["content"]
+        # check that there is content
+        assert len(response_body["content"]) > 0
+
+    def test_get_nonexistent_watchlist(self, client):
+        """
+        Test that GETting a nonexisten watchlist gives error
+        """
+        res = client.get(self.WRONG_RESOURCE_URL)
+        assert res.status_code == 404
+
+    def test_delete_existing_watchlist(self, client):
+        """
+        Check that we can delete an existing list
+        """
+        res = client.delete(self.RESOURCE_URL)
+        assert res.status_code == 200
+        # check that the resource is gone
+        res = client.get(self.RESOURCE_URL)
+        assert res.status_code == 404
+
+    def test_delete_nonexistent_watchlist(self, client):
+        """
+        Check that we cannot delete nonexistent list
+        """
+        res = client.delete(self.WRONG_RESOURCE_URL)
+        assert res.status_code == 404
