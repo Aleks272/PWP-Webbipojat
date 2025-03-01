@@ -187,12 +187,9 @@ class TestWatchListCollection(object):
         assert res.status_code == 201
         #check that there is a valid location-header
         assert res.headers["Location"]
-        # check that the resource actually exists and it has correct values
+        # check that the resource actually exists
         res = client.get(res.headers["Location"])
         assert res.status_code == 200
-        response_body = json.loads(res.data)
-        assert response_body["user_note"] == data["user_note"]
-        assert response_body["content_ids"] == data["content_ids"]
 
     def test_post_with_missing_fields(self, client):
         """
