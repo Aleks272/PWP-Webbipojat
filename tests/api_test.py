@@ -234,8 +234,8 @@ class TestWatchListCollection(object):
 
 class TestWatchListItem(object):
 
-    RESOURCE_URL = "/api/watchlists/1"
-    WRONG_RESOURCE_URL = "/api/watchlists/100"
+    RESOURCE_URL = "/api/watchlists/1/"
+    WRONG_RESOURCE_URL = "/api/watchlists/100/"
 
     def test_get_existing_watchlist(self, client):
         """
