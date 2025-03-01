@@ -20,14 +20,17 @@ After cloning repo
 
 - After running mockdata.py, data can be visually inspected from MongoDB Atlas project (needs access)
 
+# Running
+
+Due to the current setup of the project, the API can be run with the following command in folder `project_watchlist`: `flask --app __init__:create_app run` (`--debug` can be added to the end)
+
 # Testing
 
-To prepare for testing of the API, you should complete following steps:
+To run the tests for the API, you should complete following steps:
 
-1. Run `mockdata.py` from `tests`-folder, this will populate the database with test data
-2. Install the application by running `pip install -e .` in the root folder of the project
-
-Now you are ready to run the test by moving to the `tests` folder and running the command `pytest --cov-report term-missing --cov=project_watchlist`
+1. Install the application by running `pip install -e .` in the root folder of the project
+2. Move to the `tests`-folder
+3. Run `pytest --cov-report term-missing --cov=project_watchlist`, the database gets populated automatically and cleaned up afterwards.
 
 # To do:
 - Unit test (ideas)
