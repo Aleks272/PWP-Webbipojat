@@ -119,11 +119,5 @@ class ContentCollection(Resource):
             )
         except ValidationError as e:
             abort(400, str(e))
-        except KeyError:
-            abort(400, "Incomplete request - missing fields")
-        except ValueError:
-            abort(400, "Invalid content type")
-        except mongoengine.ValidationError:
-            abort(400, "Database validation error")
         except mongoengine.NotUniqueError:
             abort(400, "Content with this name already exists")

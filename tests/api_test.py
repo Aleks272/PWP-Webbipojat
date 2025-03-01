@@ -2,12 +2,19 @@ import json
 import pytest
 from werkzeug.datastructures import Headers
 from project_watchlist import create_app
+import mongoengine
+from mockdata import populate
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def client():
     app = create_app(test_mode=True)
     app.testing = True
+    # populate db
+    populate()
     yield app.test_client()
+    # Clean up after tests
+    db = mongoengine.get_connection()
+    db.drop_database('test_db')
 
 class TestUserItem(object):
     """
@@ -419,4 +426,60 @@ class TestContentCollection():
     Tests for content collection resource
     """
 
-    def test_get
+    RESOURCE_URL = "/api/content/"
+
+    def test_get_content(self, client):
+        """
+        Tests that we can get all content
+        """
+        res = client.get(self.RESOURCE_URL)
+        assert res.status_code == 200
+        response_body = json.loads(res.data)
+        # check that we have content
+        assert len(response_body["content"]) > 0
+
+    def test_post_with_valid_data(self, client):
+        """
+        Test that we can create new content with valid data
+        """
+        data = {
+            "name": "Jurassic Park",
+            "content_type": "MOVIE"
+        }
+        res = client.post(self.RESOURCE_URL, json=data)
+        assert res.status_code == 201
+        # check that headers set correctly
+        assert res.headers["Location"]
+        # check that the resource is created
+        res = client.get(res.headers["Location"])
+        assert res.status_code == 200
+
+    def test_post_with_missing_fields(self, client):
+        """
+        Check that we cannot create content with missing fields
+        """
+        data = {
+            "name": "Jurassic Park"
+        }
+        res = client.post(self.RESOURCE_URL, json=data)
+        assert res.status_code == 400
+
+    def test_post_with_unsupported_media_type(self, client):
+        """
+        Test that we get proper error when using unsupported media type
+        """
+        res = client.post(self.RESOURCE_URL,
+                          data="test",
+                          headers=Headers({"Content-Type": "text"}))
+        assert res.status_code == 415
+
+    def test_post_with_existing_content_name(self, client):
+        """
+        Test that cannot create content with existing name
+        """
+        data = {
+            "name": "Deadpool",
+            "content_type": "MOVIE"
+        }
+        res = client.post(self.RESOURCE_URL, json=data)
+        assert res.status_code == 400
