@@ -20,6 +20,15 @@ After cloning repo
 
 - After running mockdata.py, data can be visually inspected from MongoDB Atlas project (needs access)
 
+# Testing
+
+To prepare for testing of the API, you should complete following steps:
+
+1. Run `mockdata.py` from `tests`-folder, this will populate the database with test data
+2. Install the application by running `pip install -e .` in the root folder of the project
+
+Now you are ready to run the test by moving to the `tests` folder and running the command `pytest`
+
 # To do:
 - Unit test (ideas)
     - (run) Every endpoint with legit values
