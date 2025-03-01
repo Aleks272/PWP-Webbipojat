@@ -2,7 +2,6 @@ from flask import Response, json, request, abort
 from flask_restful import Resource
 from jsonschema import validate, ValidationError
 from werkzeug.exceptions import UnsupportedMediaType
-import mongoengine
 
 from project_watchlist.models import Watchlist, Content
 from project_watchlist.watchlist_api import api
@@ -49,10 +48,6 @@ class WatchlistItem(Resource):
             )
         except ValidationError as e:
             abort(400, str(e))
-        except KeyError:
-            abort(400, "Incomplete request - missing fields")
-        except mongoengine.ValidationError:
-            abort(400, "Database validation error")
 
     def delete(self, watchlist):
         watchlist.delete()
@@ -147,5 +142,3 @@ class WatchlistCollection(Resource):
             )
         except ValidationError as e:
             abort(400, str(e))
-        except mongoengine.ValidationError:
-            abort(400, "Database validation error")

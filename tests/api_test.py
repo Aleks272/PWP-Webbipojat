@@ -259,6 +259,66 @@ class TestWatchListItem(object):
         res = client.get(self.WRONG_RESOURCE_URL)
         assert res.status_code == 404
 
+    def test_put_with_valid_data(self, client):
+        """
+        Check that we can modify list with valid data
+        """
+        data = {
+            "content_ids": [1],
+            "user_note": "modified note",
+            "public_entry": True
+        }
+        res = client.put(self.RESOURCE_URL, json=data)
+        assert res.status_code == 200
+        # check that the note changed
+        res = client.get(self.RESOURCE_URL)
+        response_body = json.loads(res.data)
+        assert response_body["user_note"] == data["user_note"]
+
+    def test_put_with_missing_fields(self, client):
+        """
+        Check that we cannot modify list with missing fields
+        """
+        data = {
+            "content_ids": [1],
+            "public_entry": True
+        }
+        res = client.put(self.RESOURCE_URL, json=data)
+        assert res.status_code == 400
+
+    def test_put_with_unsupported_media_type(self, client):
+        """
+        Check that we get correct error for non-JSON request
+        """
+        res = client.put(self.RESOURCE_URL,
+                         data="testdata",
+                         headers=Headers({"Content-Type":"text"}))
+        assert res.status_code == 415
+
+    def test_put_with_nonexistent_content(self, client):
+        """
+        Test that we cannot modify a list to contain nonexistent content
+        """
+        data = {
+            "content_ids": [1, 100],
+            "public_entry": True,
+            "user_note": "ok"
+        }
+        res = client.put(self.RESOURCE_URL, json=data)
+        assert res.status_code == 400
+
+    def test_put_with_duplicate_content(self, client):
+        """
+        Test that we cannot modify a list to contain duplicate entries
+        """
+        data = {
+            "content_ids": [1, 1],
+            "public_entry": True,
+            "user_note": "ok"
+        }
+        res = client.put(self.RESOURCE_URL, json=data)
+        assert res.status_code == 400
+
     def test_delete_existing_watchlist(self, client):
         """
         Check that we can delete an existing list
