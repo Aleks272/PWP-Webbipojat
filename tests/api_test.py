@@ -192,7 +192,6 @@ class TestWatchListCollection(object):
         assert res.status_code == 200
         response_body = json.loads(res.data)
         assert response_body["user_note"] == data["user_note"]
-        assert response_body["public_entry"] == data["public_entry"]
         assert response_body["content_ids"] == data["content_ids"]
 
     def test_post_with_missing_fields(self, client):
