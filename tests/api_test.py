@@ -4,6 +4,11 @@ from werkzeug.datastructures import Headers
 from project_watchlist import create_app
 import mongoengine
 from mockdata import populate
+from flask_jwt_extended import create_access_token
+from dotenv import load_dotenv
+import os
+from project_watchlist.models import Users
+
 
 @pytest.fixture(scope="session")
 def client():
@@ -11,7 +16,8 @@ def client():
     app.testing = True
     # populate db
     populate(test_mode=True)
-    yield app.test_client()
+    with app.test_request_context():
+        yield app.test_client()
     # Clean up after tests
     db = mongoengine.get_connection()
     db.drop_database('test_db')
@@ -169,12 +175,11 @@ class TestUserCollection(object):
                           headers=Headers({"Content-Type":"text"}))
         assert res.status_code == 415
 
-class TestWatchListCollection(object):
+class TestPublicWatchListCollection(object):
     """
     Tests WatchlistCollection-resource
     """
-
-    RESOURCE_URL = "/api/users/johndoe/watchlists/"
+    RESOURCE_URL = "/api/users/elonmusk/watchlists/public/"
 
     def test_get(self, client):
         res = client.get(self.RESOURCE_URL)
@@ -184,22 +189,44 @@ class TestWatchListCollection(object):
         # there should be content inside watchlists
         assert len(watchlists) > 0
     
-    def test_post_with_valid_data(self, client):
+    def test_post_with_valid_data_and_headers(self, client):
         """
-        Create a watchlist with valid data
+        Create a watchlist with valid data and authorization
         """
         data = {
             "user_note": "test note",
             "public_entry": True,
             "content_ids": [1,2]
         }
-        res = client.post(self.RESOURCE_URL, json=data)
+        user = Users.objects(username="elonmusk").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Authorization": f"Bearer {access_token}"
+        })
+        res = client.post(self.RESOURCE_URL, json=data, headers=headers)
         assert res.status_code == 201
         #check that there is a valid location-header
         assert res.headers["Location"]
         # check that the resource actually exists
         res = client.get(res.headers["Location"])
         assert res.status_code == 200
+
+    def test_post_with_valid_data_and_invalid_headers(self, client):
+        """
+        Create a watchlist with valid data and invalid authorization
+        """
+        data = {
+            "user_note": "test note",
+            "public_entry": True,
+            "content_ids": [1,2]
+        }
+        user = Users.objects(username="johndoe").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Authorization": f"Bearer {access_token}"
+        })
+        res = client.post(self.RESOURCE_URL, json=data, headers=headers)
+        assert res.status_code == 401
 
     def test_post_with_missing_fields(self, client):
         """
@@ -209,7 +236,12 @@ class TestWatchListCollection(object):
             "user_note": "test note",
             "public_entry": True
         }
-        res = client.post(self.RESOURCE_URL, json=data)
+        user = Users.objects(username="elonmusk").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Authorization": f"Bearer {access_token}"
+        })
+        res = client.post(self.RESOURCE_URL, json=data, headers=headers)
         assert res.status_code == 400
 
     def test_post_with_duplicate_content(self, client):
@@ -221,7 +253,12 @@ class TestWatchListCollection(object):
             "public_entry": True,
             "content_ids": [1,2,2]
         }
-        res = client.post(self.RESOURCE_URL, json=data)
+        user = Users.objects(username="elonmusk").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Authorization": f"Bearer {access_token}"
+        })
+        res = client.post(self.RESOURCE_URL, json=data, headers=headers)
         assert res.status_code == 400
 
     def test_post_with_nonexistent_content(self, client):
@@ -233,13 +270,27 @@ class TestWatchListCollection(object):
             "public_entry": True,
             "content_ids": [1,100]
         }
-        res = client.post(self.RESOURCE_URL, json=data)
+        user = Users.objects(username="elonmusk").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Authorization": f"Bearer {access_token}"
+        })
+        res = client.post(self.RESOURCE_URL, json=data, headers=headers)
         assert res.status_code == 400
 
     def test_post_with_unsupported_media_type(self, client):
+        """
+        Test that POST with wrong media type results in error
+        """
+        user = Users.objects(username="elonmusk").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Content-Type":"text",
+            "Authorization": f"Bearer {access_token}"
+        })
         res = client.post(self.RESOURCE_URL,
                           data="test",
-                          headers=Headers({"Content-Type":"text"}))
+                          headers=headers)
         assert res.status_code == 415
 
 class TestWatchListItem(object):
