@@ -1,7 +1,8 @@
 from flask import Response, json, request, abort
 from flask_restful import Resource
 from jsonschema import validate, ValidationError
-from werkzeug.exceptions import UnsupportedMediaType
+from werkzeug.exceptions import UnsupportedMediaType, Unauthorized
+from flask_jwt_extended import current_user, jwt_required
 
 from project_watchlist.models import Watchlist, Content
 from project_watchlist.watchlist_api import api
@@ -117,23 +118,6 @@ class WatchlistCollection(Resource):
     """
     A resource to interact with a collection of watchlists
     """
-    def get(self, user):
-        """
-        Get all user's watchlists
-        """
-        person_id = user.person_id
-        # get all lists with user's id
-        watchlists = Watchlist.objects(person_id=person_id)
-        response = {
-            "watchlists": []
-        }
-        # Constructing the response, run through all lists
-        for watchlist in watchlists:
-            # Transforming the list to JSON and adding to response
-            response["watchlists"].append(watchlist.to_json())
-        return Response(json.dumps(response),
-                        200, 
-                        mimetype="application/json")
 
     def post(self, user):
         """
@@ -166,3 +150,52 @@ class WatchlistCollection(Resource):
             )
         except ValidationError as e:
             abort(400, str(e))
+
+class PublicWatchlistCollection(Resource):
+    """
+    A resource class for interacting with public watchlists of the user
+    """
+    def get(self, user):
+        """
+        Get all user's public watchlists
+        """
+        person_id = user.person_id
+        # get all lists with user's id
+        watchlists = Watchlist.objects(person_id=person_id, public_entry=True)
+        response = {
+            "watchlists": []
+        }
+        # Constructing the response, run through all lists
+        for watchlist in watchlists:
+            # Transforming the list to JSON and adding to response
+            response["watchlists"].append(watchlist.to_json())
+        return Response(json.dumps(response),
+                        200, 
+                        mimetype="application/json")
+
+class PrivateWatchlistCollection(Resource):
+    """
+    Resource class for interacting with private watchlists
+    """
+    @jwt_required()
+    def get(self, user):
+        """
+        Get private watchlists for the user
+
+        :returns: a Response with user's private watchlists
+        :raises: Unauthorized if the authenticated user is not the same as the owner of these watchlists
+        """
+        # if identified user is the same as the user in the URL...
+        if current_user.person_id == user.person_id:
+            # we can return all private watchlists for that user
+            private_watchlists = Watchlist.objects(person_id=user.person_id, public_entry=False)
+            response = {
+                "watchlists": []
+            }
+            for private_watchlist in private_watchlists:
+                response["watchlists"].append(private_watchlist.to_json())
+            return Response(json.dumps(response),
+                        200, 
+                        mimetype="application/json")
+        # if the user is wrong, respond with Unauthorized
+        raise Unauthorized("You are not authorized to view these watchlists")

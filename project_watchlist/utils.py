@@ -50,4 +50,4 @@ def jwt_user_lookup_loader(_jwt_header, jwt_data):
     :returns: the user object if it exists or None
     """
     identity = jwt_data["sub"]
-    return Users.objects(user_id=identity).first()
+    return Users.objects(person_id=identity).first()
