@@ -41,7 +41,7 @@ def jwt_user_identity_loader(user):
 
     :returns: the id of the user passed to this function
     """
-    return str(user.user_id)
+    return str(user.person_id)
 
 def jwt_user_lookup_loader(_jwt_header, jwt_data):
     """

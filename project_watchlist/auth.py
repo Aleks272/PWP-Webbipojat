@@ -5,11 +5,12 @@ from flask import Blueprint, request, Response
 from flask_jwt_extended import create_access_token
 from werkzeug.exceptions import BadRequest, UnsupportedMediaType, Unauthorized, NotFound
 import bcrypt
+import json
 from project_watchlist.models import Users
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
-@auth_bp.route("/login", methods=["POST"])
+@auth_bp.route("/login/", methods=["POST"])
 def login():
     """
     A function that checks the user's credentials and creates an access token if
@@ -30,13 +31,13 @@ def login():
         if db_user is None:
             raise NotFound(f"The user {username} does not exist")
         # convert given password to bytes and compare to hash in db
-        if bcrypt.checkpw(given_password.encode('utf-8'), db_user.password_hash):
+        if bcrypt.checkpw(given_password.encode("utf-8"), db_user.password_hash.encode("utf-8")):
             # checkpw returns true, hashes match
             jwt = create_access_token(db_user)
-            return Response(
+            return Response(json.dumps(
                 {
                     "token": jwt
-                },
+                }),
                 status=200,
                 mimetype="application/json"
             )
