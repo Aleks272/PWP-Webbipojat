@@ -85,8 +85,7 @@ class WatchlistItem(Resource):
         schema = {
             "type": "object",
             "required": ["content_ids",
-                         "user_note",
-                         "public_entry"]
+                         "user_note"]
         }
         properties = schema["properties"] = {}
         properties["watchlist_id"] = {
@@ -108,48 +107,7 @@ class WatchlistItem(Resource):
             "description": "Note entered by user",
             "type": "string"
         }
-        properties["public_entry"] = {
-            "description": "Specifies whether or not this list is public",
-            "type": "boolean"
-        }
         return schema
-
-class WatchlistCollection(Resource):
-    """
-    A resource to interact with a collection of watchlists
-    """
-
-    def post(self, user):
-        """
-        Create a new watchlist for the user
-        """
-        if not request.json:
-            raise UnsupportedMediaType
-        try:
-            validate(request.json, WatchlistItem.json_schema())
-
-            #check that all content id's exist
-            validate_content(request.json["content_ids"])
-            
-            new_watchlist = Watchlist(
-                user_note=request.json["user_note"],
-                public_entry=request.json["public_entry"],
-                person_id=user.person_id,
-                content_ids=request.json["content_ids"]
-                )
-            Watchlist.objects.insert(new_watchlist)
-            return Response(
-                "New watchlist added", 
-                status=201, 
-                mimetype="application/json",
-                headers={"Location": api.url_for(
-                    WatchlistItem,
-                    watchlist=new_watchlist
-                    )
-                }
-            )
-        except ValidationError as e:
-            abort(400, str(e))
 
 class PublicWatchlistCollection(Resource):
     """
@@ -172,6 +130,41 @@ class PublicWatchlistCollection(Resource):
         return Response(json.dumps(response),
                         200, 
                         mimetype="application/json")
+
+    @jwt_required()
+    def post(self, user):
+        """
+        Create a new public watchlist for the user
+        """
+        if not request.json:
+            raise UnsupportedMediaType
+        if not user.person_id == current_user.person_id:
+            raise Unauthorized("Your are not authorized to create lists for this user")
+        try:
+            validate(request.json, WatchlistItem.json_schema())
+
+            #check that all content id's exist
+            validate_content(request.json["content_ids"])
+            
+            new_watchlist = Watchlist(
+                user_note=request.json["user_note"],
+                public_entry=True,
+                person_id=user.person_id,
+                content_ids=request.json["content_ids"]
+                )
+            Watchlist.objects.insert(new_watchlist)
+            return Response(
+                "New watchlist added", 
+                status=201, 
+                mimetype="application/json",
+                headers={"Location": api.url_for(
+                    WatchlistItem,
+                    watchlist=new_watchlist
+                    )
+                }
+            )
+        except ValidationError as e:
+            abort(400, str(e))
 
 class PrivateWatchlistCollection(Resource):
     """
@@ -199,3 +192,38 @@ class PrivateWatchlistCollection(Resource):
                         mimetype="application/json")
         # if the user is wrong, respond with Unauthorized
         raise Unauthorized("You are not authorized to view these watchlists")
+
+    @jwt_required()
+    def post(self, user):
+        """
+        Create a new private watchlist for the user
+        """
+        if not request.json:
+            raise UnsupportedMediaType
+        if not user.person_id == current_user.person_id:
+            raise Unauthorized("Your are not authorized to create lists for this user")
+        try:
+            validate(request.json, WatchlistItem.json_schema())
+
+            #check that all content id's exist
+            validate_content(request.json["content_ids"])
+            
+            new_watchlist = Watchlist(
+                user_note=request.json["user_note"],
+                public_entry=False,
+                person_id=user.person_id,
+                content_ids=request.json["content_ids"]
+                )
+            Watchlist.objects.insert(new_watchlist)
+            return Response(
+                "New watchlist added", 
+                status=201, 
+                mimetype="application/json",
+                headers={"Location": api.url_for(
+                    WatchlistItem,
+                    watchlist=new_watchlist
+                    )
+                }
+            )
+        except ValidationError as e:
+            abort(400, str(e))
