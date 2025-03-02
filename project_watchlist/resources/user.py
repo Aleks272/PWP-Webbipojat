@@ -22,6 +22,10 @@ class UserItem(Resource):
             raise UnsupportedMediaType
         try:
             validate(request.json, UserItem.json_schema())
+            salt = bcrypt.gensalt()
+            cleartext_password = request.json["password"]
+            hashed_password = bcrypt.hashpw(cleartext_password.encode("utf-8"), salt)
+            user.password_hash = hashed_password.decode("utf-8")
             user.username = request.json["username"]
             user.email = request.json["email"]
             user.save()
