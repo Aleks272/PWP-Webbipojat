@@ -17,6 +17,7 @@ class Users(Document):
     person_id = SequenceField()
     username = StringField(unique=True)
     email = StringField(unique=True)
+    password_hash = StringField()
 
     def to_json(self):
         """

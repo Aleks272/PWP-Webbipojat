@@ -10,7 +10,7 @@ def client():
     app = create_app(test_mode=True)
     app.testing = True
     # populate db
-    populate()
+    populate(test_mode=True)
     yield app.test_client()
     # Clean up after tests
     db = mongoengine.get_connection()

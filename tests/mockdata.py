@@ -7,16 +7,24 @@ from project_watchlist.models import Users, Content, FollowerList, Watchlist, Co
 from mongoengine import connect
 import os
 from dotenv import load_dotenv
+import bcrypt
 
-#load_dotenv()
-#connect(host=os.getenv("MONGODB_CONNECTION_STRING"), name="test_db")
+#
 
 # Populates the database with mock data
-def populate():
+def populate(test_mode=False):
+
+    if not test_mode:
+        load_dotenv()
+        connect(host=os.getenv("MONGODB_CONNECTION_STRING"), name="db")
+
+    example_password = "password"
+    salt = bcrypt.gensalt()
+    example_hash = bcrypt.hashpw(example_password.encode('utf-8'), salt)
     users = [
-        Users(username="johndoe", email="john.doe@gmail.com"),
-        Users(username="foobar", email="foobar@icloud.com"),
-        Users(username="elonmusk", email="presidentmusk@whatdidyoudothisweek.gov")
+        Users(username="johndoe", email="john.doe@gmail.com", password_hash=example_hash),
+        Users(username="foobar", email="foobar@icloud.com", password_hash=example_hash),
+        Users(username="elonmusk", email="presidentmusk@whatdidyoudothisweek.gov", password_hash=example_hash)
     ]
     for user in users:
         user.validate()
@@ -76,3 +84,7 @@ def populate():
     content = Content.objects(name="Inception").first().content_id
     new_entry = Watchlist(person_id=person, content_ids={content}, user_note="Tesla Model SS", public_entry=False)
     new_entry.save()
+
+if __name__=="__main__":
+    print("populating...")
+    populate()
