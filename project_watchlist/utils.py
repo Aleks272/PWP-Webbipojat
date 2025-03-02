@@ -33,3 +33,21 @@ class WatchlistConverter(BaseConverter):
 
     def to_url(self, value):
         return str(value.watchlist_id)
+
+def jwt_user_identity_loader(user):
+    """
+    Helper function which takes a Users-object
+    and returns an identity in JSON-ready format
+
+    :returns: the id of the user passed to this function
+    """
+    return str(user.user_id)
+
+def jwt_user_lookup_loader(_jwt_header, jwt_data):
+    """
+    Helper function which loads the user from the database when given identity in JWT data
+
+    :returns: the user object if it exists or None
+    """
+    identity = jwt_data["sub"]
+    return Users.objects(user_id=identity).first()

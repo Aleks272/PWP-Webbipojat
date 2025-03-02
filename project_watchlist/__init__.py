@@ -21,7 +21,11 @@ def create_app(test_mode=False):
 
     from project_watchlist import watchlist_api
     from project_watchlist import auth
-    from project_watchlist.utils import UserConverter, WatchlistConverter, ContentConverter
+    from project_watchlist.utils import UserConverter, WatchlistConverter, ContentConverter, jwt_user_identity_loader, jwt_user_lookup_loader
+    # register loaders for JWT
+    jwt_manager.user_identity_loader(jwt_user_identity_loader)
+    jwt_manager.user_lookup_loader(jwt_user_lookup_loader)
+    # register converters
     app.url_map.converters["user"] = UserConverter
     app.url_map.converters["watchlist"] = WatchlistConverter
     app.url_map.converters["content"] = ContentConverter
