@@ -120,7 +120,7 @@ class ContentCollection(Resource):
             Content.objects.insert(new_content)
             return Response(
                 "New content added", 
-                status=201, 
+                status=201,
                 mimetype="application/json",
                 headers={"Location": api.url_for(
                     ContentItem,
