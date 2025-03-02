@@ -44,7 +44,7 @@ class WatchlistItem(Resource):
         :raises UnsupportedMediaType: if the request was not JSON
         :raises HTTPException: if the request does not contain the needed fields
         """
-        if not request.json:
+        if request.content_type != "application/json":
             raise UnsupportedMediaType
         try:
             validate(request.json, WatchlistItem.json_schema())
@@ -136,7 +136,7 @@ class PublicWatchlistCollection(Resource):
         """
         Create a new public watchlist for the user
         """
-        if not request.json:
+        if request.content_type != "application/json":
             raise UnsupportedMediaType
         if not user.person_id == current_user.person_id:
             raise Unauthorized("Your are not authorized to create lists for this user")
@@ -198,7 +198,7 @@ class PrivateWatchlistCollection(Resource):
         """
         Create a new private watchlist for the user
         """
-        if not request.json:
+        if request.content_type != "application/json":
             raise UnsupportedMediaType
         if not user.person_id == current_user.person_id:
             raise Unauthorized("Your are not authorized to create lists for this user")

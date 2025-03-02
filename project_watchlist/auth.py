@@ -3,7 +3,7 @@ This module provides routes for user authentication with JWT
 """
 from flask import Blueprint, request, Response
 from flask_jwt_extended import create_access_token
-from werkzeug.exceptions import BadRequest, UnsupportedMediaType, Unauthorized, NotFound
+from werkzeug.exceptions import BadRequest, Unauthorized, NotFound, UnsupportedMediaType
 import bcrypt
 import json
 from project_watchlist.models import Users
@@ -17,13 +17,12 @@ def login():
     the credentials are correct
 
     :returns: a Response object containing an access token
-    :raises UnsupportedMediaType: if the request was not in JSON format
     :raises KeyError: if fields 'username' or 'password' were missing from the request
     :raises Unauthorized: if the user's credentials were wrong
     :raises NotFound: if the user does not exist
     """
-    if request.json is None:
-        raise UnsupportedMediaType()
+    if not request.content_type == "application/json":
+        raise UnsupportedMediaType
     try:
         username = request.json["username"]
         given_password = request.json["password"]

@@ -18,7 +18,7 @@ class UserItem(Resource):
         )
     # Update user details for user provided in URL (e.g. /api/users/johndoe/)
     def put(self, user):
-        if not request.json:
+        if not request.content_type == "application/json":
             raise UnsupportedMediaType
         try:
             validate(request.json, UserItem.json_schema())
@@ -83,8 +83,8 @@ class UserCollection(Resource):
         return Response(json.dumps(body), 200, mimetype="application/json")
     # Add new user to database
     def post(self):
-        if not request.json:
-            abort(415, "unsupported media type")
+        if not request.content_type == "application/json":
+            raise UnsupportedMediaType
         try:
             validate(request.json, UserItem.json_schema())
             salt = bcrypt.gensalt()

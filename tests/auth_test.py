@@ -69,3 +69,14 @@ class TestAuthLogin():
         }
         res = client.post(self.RESOURCE_URL, json=data)
         assert res.status_code == 400
+
+    def test_login_with_nonexistent_user(self, client):
+        """
+        Test that we get an error when trying to login as nonexistent user
+        """
+        data = {
+            "username": "nonexistent",
+            "password": "password"
+        }
+        res = client.post(self.RESOURCE_URL, json=data)
+        assert res.status_code == 404

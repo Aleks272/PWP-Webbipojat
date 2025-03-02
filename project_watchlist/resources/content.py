@@ -25,7 +25,7 @@ class ContentItem(Resource):
         """
         Update existing content
         """
-        if not request.json:
+        if not request.content_type == "application/json":
             raise UnsupportedMediaType
         try:
             validate(request.json, ContentItem.json_schema())
@@ -105,7 +105,7 @@ class ContentCollection(Resource):
         """
         Create a new content entry
         """
-        if not request.json:
+        if not request.content_type == "application/json":
             raise UnsupportedMediaType
         try:
             validate(request.json, ContentItem.json_schema())
