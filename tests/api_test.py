@@ -48,7 +48,8 @@ class TestUserItem(object):
         """
         data = {
             "username": "foobar",
-            "email": "foobar@hotmail.com"
+            "email": "foobar@hotmail.com",
+            "password": "password"
         }
         res = client.put(self.RESOURCE_URL,
                          json=data)
@@ -126,7 +127,8 @@ class TestUserCollection(object):
         """
         data = {
             "username": "new_user",
-            "email": "example-email@example.com"
+            "email": "example-email@example.com",
+            "password": "password"
         }
         res = client.post(self.RESOURCE_URL, json=data)
         assert res.status_code == 201
@@ -145,7 +147,8 @@ class TestUserCollection(object):
         """
         data = {
             "username": "johndoe",
-            "email":"johndoe@gmail.com"
+            "email":"johndoe@gmail.com",
+            "password": "password"
         }
         res = client.post(self.RESOURCE_URL, json=data)
         assert res.status_code == 400
