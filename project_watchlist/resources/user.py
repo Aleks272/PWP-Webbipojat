@@ -4,6 +4,7 @@ from jsonschema import validate, ValidationError
 from werkzeug.exceptions import UnsupportedMediaType
 from project_watchlist.models import Users
 import mongoengine
+import bcrypt
 from project_watchlist.watchlist_api import api
 
 class UserItem(Resource):
@@ -47,7 +48,7 @@ class UserItem(Resource):
     def json_schema():
         schema = {
             "type": "object",
-            "required": ["username", "email"]
+            "required": ["username", "email", "password"]
         }
         properties = schema["properties"] = {}
         properties["username"] = {
@@ -59,6 +60,10 @@ class UserItem(Resource):
             "description": "Email",
             "type": "string",
             "pattern": "^[^\\s]*$" # No whitespace allowed
+        }
+        properties["password"] = {
+            "description": "Password for user",
+            "type": "string"
         }
         return schema
 
@@ -78,20 +83,22 @@ class UserCollection(Resource):
             abort(415, "unsupported media type")
         try:
             validate(request.json, UserItem.json_schema())
-
-            new_User = Users(
+            salt = bcrypt.gensalt()
+            cleartext_password = request.json["password"]
+            hashed_password = bcrypt.hashpw(cleartext_password.encode("utf-8"), salt)
+            new_user = Users(
                 username=request.json["username"],
-                email=request.json["email"]
-
+                email=request.json["email"],
+                password_hash=hashed_password
             )
-            Users.objects.insert(new_User)
+            Users.objects.insert(new_user)
             return Response(
                 "New user added", 
                 status=201, 
                 mimetype="application/json",
                 headers={"Location": api.url_for(
                     UserItem,
-                    user=new_User
+                    user=new_user
                     )
                 }
             )
