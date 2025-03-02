@@ -1,13 +1,19 @@
+"""
+This module includes the tests for authentication
+"""
+import json
 import pytest
 import mongoengine
-import json
 from werkzeug.datastructures import Headers
 
-from project_watchlist import create_app
 from mockdata import populate
+from project_watchlist import create_app
 
 @pytest.fixture(scope="module")
 def client():
+    """
+    Sets up the test client
+    """
     app = create_app(test_mode=True)
     app.testing = True
     # populate db
@@ -20,6 +26,9 @@ def client():
     mongoengine.disconnect_all()
 
 class TestAuthLogin():
+    """
+    Tests for login resource
+    """
 
     RESOURCE_URL = "/auth/login/"
 

@@ -26,6 +26,7 @@ def login():
     try:
         username = request.json["username"]
         given_password = request.json["password"]
+        #pylint: disable=no-member
         db_user = Users.objects(username=username).first()
         if db_user is None:
             raise NotFound(f"The user {username} does not exist")

@@ -1,3 +1,6 @@
+"""
+This module defines resources for watchlist
+"""
 from flask import Response, json, request, abort
 from flask_restful import Resource
 from jsonschema import validate, ValidationError
@@ -14,6 +17,7 @@ def validate_content(given_ids):
     """
     on_list = []
     for content_id in given_ids:
+        #pylint: disable=no-member
         db_content = Content.objects(content_id=content_id)
         if not db_content:
             abort(400, f"Content with id {content_id} does not exist")
@@ -119,6 +123,7 @@ class PublicWatchlistCollection(Resource):
         """
         person_id = user.person_id
         # get all lists with user's id
+        #pylint: disable=no-member
         watchlists = Watchlist.objects(person_id=person_id, public_entry=True)
         response = {
             "watchlists": []
@@ -128,7 +133,7 @@ class PublicWatchlistCollection(Resource):
             # Transforming the list to JSON and adding to response
             response["watchlists"].append(watchlist.to_json())
         return Response(json.dumps(response),
-                        200, 
+                        200,
                         mimetype="application/json")
 
     @jwt_required()
@@ -145,17 +150,18 @@ class PublicWatchlistCollection(Resource):
 
             #check that all content id's exist
             validate_content(request.json["content_ids"])
-            
+
             new_watchlist = Watchlist(
                 user_note=request.json["user_note"],
                 public_entry=True,
                 person_id=user.person_id,
                 content_ids=request.json["content_ids"]
                 )
+            #pylint: disable=no-member
             Watchlist.objects.insert(new_watchlist)
             return Response(
                 "New watchlist added", 
-                status=201, 
+                status=201,
                 mimetype="application/json",
                 headers={"Location": api.url_for(
                     WatchlistItem,
@@ -176,11 +182,13 @@ class PrivateWatchlistCollection(Resource):
         Get private watchlists for the user
 
         :returns: a Response with user's private watchlists
-        :raises: Unauthorized if the authenticated user is not the same as the owner of these watchlists
+        :raises: Unauthorized if the authenticated user is not the same as
+                 the owner of these watchlists
         """
         # if identified user is the same as the user in the URL...
         if current_user.person_id == user.person_id:
             # we can return all private watchlists for that user
+            #pylint: disable=no-member
             private_watchlists = Watchlist.objects(person_id=user.person_id, public_entry=False)
             response = {
                 "watchlists": []
@@ -188,7 +196,7 @@ class PrivateWatchlistCollection(Resource):
             for private_watchlist in private_watchlists:
                 response["watchlists"].append(private_watchlist.to_json())
             return Response(json.dumps(response),
-                        200, 
+                        200,
                         mimetype="application/json")
         # if the user is wrong, respond with Unauthorized
         raise Unauthorized("You are not authorized to view these watchlists")
@@ -207,13 +215,14 @@ class PrivateWatchlistCollection(Resource):
 
             #check that all content id's exist
             validate_content(request.json["content_ids"])
-            
+
             new_watchlist = Watchlist(
                 user_note=request.json["user_note"],
                 public_entry=False,
                 person_id=user.person_id,
                 content_ids=request.json["content_ids"]
                 )
+            #pylint: disable=no-member
             Watchlist.objects.insert(new_watchlist)
             return Response(
                 "New watchlist added", 

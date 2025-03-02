@@ -46,6 +46,7 @@ class ContentItem(Resource):
         """
         # need to make sure that the content does not remain in any watchlist
         # first, we get all our existing watchlists
+        #pylint: disable=no-member
         watchlists = Watchlist.objects()
         # then we loop through all the watchlists
         for watchlist in watchlists:
@@ -95,6 +96,7 @@ class ContentCollection(Resource):
         Get all content
         """
         body = {"content": []}
+        #pylint: disable=no-member
         for db_content in Content.objects():
             item = db_content.to_json()
             body["content"].append(item)
@@ -117,6 +119,7 @@ class ContentCollection(Resource):
                 name=request.json["name"],
                 content_type=content_type
             )
+            #pylint: disable=no-member
             Content.objects.insert(new_content)
             return Response(
                 "New content added", 

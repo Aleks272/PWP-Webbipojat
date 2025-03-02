@@ -1,13 +1,19 @@
+"""
+Tests for user-related resources
+"""
+import json
 import pytest
 import mongoengine
-import json
 from werkzeug.datastructures import Headers
 
-from project_watchlist import create_app
 from mockdata import populate
+from project_watchlist import create_app
 
 @pytest.fixture(scope="module")
 def client():
+    """
+    Sets up the test client
+    """
     app = create_app(test_mode=True)
     app.testing = True
     # populate db
@@ -19,7 +25,7 @@ def client():
     db.drop_database('test_db')
     mongoengine.disconnect_all()
 
-class TestUserCollection(object):
+class TestUserCollection():
     """
     Tests the user collection resource
     """
@@ -82,12 +88,15 @@ class TestUserCollection(object):
         assert res.status_code == 400
 
     def test_create_user_with_unsupported_media_type(self, client):
+        """
+        Test that creating user with unsupported media type fails
+        """
         res = client.post(self.RESOURCE_URL,
                           data="test",
                           headers=Headers({"Content-Type":"text"}))
         assert res.status_code == 415
 
-class TestUserItem(object):
+class TestUserItem():
     """
     Tests the user item resource
     """
@@ -139,7 +148,7 @@ class TestUserItem(object):
                          data="testdata",
                          headers=Headers({"Content-Type": "text"}))
         assert res.status_code == 415
-    
+
     def test_modify_user_with_missing_fields(self, client):
         """
         Testing that modification fails with missing fields
@@ -149,7 +158,7 @@ class TestUserItem(object):
         }
         res = client.put(self.RESOURCE_URL, json=data)
         assert res.status_code == 400
-    
+
     def test_modify_user_with_existing_username(self, client):
         """
         Test that modification fails with already existing username
@@ -165,7 +174,7 @@ class TestUserItem(object):
     def test_delete_nonexistent_user(self, client):
         res = client.delete(self.WRONG_RESOURCE_URL)
         assert res.status_code == 404
-        
+
     def test_delete_existing_user(self, client):
         res = client.delete(self.RESOURCE_URL)
         assert res.status_code == 200

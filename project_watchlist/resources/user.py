@@ -1,10 +1,14 @@
+"""
+This modules includes user-related resources
+"""
 from flask import Response, json, request, abort
 from flask_restful import Resource
 from jsonschema import validate, ValidationError
 from werkzeug.exceptions import UnsupportedMediaType
-from project_watchlist.models import Users
 import mongoengine
 import bcrypt
+
+from project_watchlist.models import Users
 from project_watchlist.watchlist_api import api
 
 class UserItem(Resource):
@@ -76,6 +80,7 @@ class UserCollection(Resource):
     # Get all users in database
     def get(self):
         body = {"users": []}
+        #pylint: disable=no-member
         for db_user in Users.objects():
             item = db_user.to_json()
             body["users"].append(item)
@@ -95,6 +100,7 @@ class UserCollection(Resource):
                 email=request.json["email"],
                 password_hash=hashed_password
             )
+            #pylint: disable=no-member
             Users.objects.insert(new_user)
             return Response(
                 "New user added", 
