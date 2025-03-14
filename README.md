@@ -34,12 +34,6 @@ To run the tests for the API, you should complete following steps:
 2. Move to the `tests`-folder
 3. Run `pytest --cov-report term-missing --cov=project_watchlist`, the database gets populated automatically and cleaned up afterwards.
 
-# To do:
-- Unit test (ideas)
-    - (run) Every endpoint with legit values
-    - Error handling tests (invalid inputs, missing field)
-    - Tests for database validation rules
-
 # Linting
 
 You can run `pylint` for the API with the command `pylint project_watchlist` in the root folder of this project.
