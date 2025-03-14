@@ -1,9 +1,15 @@
+"""
+Utility functions and classes for the API
+"""
 from werkzeug.routing import BaseConverter
 from werkzeug.exceptions import NotFound
 
 from project_watchlist.models import Users, Content, Watchlist
 
 class UserConverter(BaseConverter):
+    """
+    Flask converter for User resource
+    """
     # Fetch user item from database by username
     def to_python(self, value):
         db_user = Users.objects(username=value).first()
@@ -15,16 +21,22 @@ class UserConverter(BaseConverter):
         return str(value.username)
 
 class ContentConverter(BaseConverter):
+    """
+    Flask converter for Content resource
+    """
     def to_python(self, value):
         db_content = Content.objects(content_id=int(value)).first()
         if db_content is None:
             raise NotFound
         return db_content
-    
+
     def to_url(self, value):
         return str(value.content_id)
 
 class WatchlistConverter(BaseConverter):
+    """
+    Flask converter for Watchlist resource
+    """
     def to_python(self, value):
         db_watchlist = Watchlist.objects(watchlist_id=value).first()
         if db_watchlist is None:
