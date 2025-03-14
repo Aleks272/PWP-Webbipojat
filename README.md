@@ -22,7 +22,9 @@ After cloning repo
 
 # Running
 
-Due to the current setup of the project, the API can be run with the following command in folder `project_watchlist`: `flask --app __init__:create_app run` (`--debug` can be added to the end)
+To run the API server, you can set the environment variable `FLASK_APP` to `project_watchlist`, and then execute command `flask run` in the root folder of the project.
+
+Another way of running the API is to use the command `flask --app=project_watchlist run` in the project root folder.
 
 # Testing
 
@@ -37,3 +39,7 @@ To run the tests for the API, you should complete following steps:
     - (run) Every endpoint with legit values
     - Error handling tests (invalid inputs, missing field)
     - Tests for database validation rules
+
+# Linting
+
+You can run `pylint` for the API with the command `pylint project_watchlist` in the root folder of this project.
