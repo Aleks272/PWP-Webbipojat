@@ -26,10 +26,10 @@ def create_app(test_mode=False):
 
     from project_watchlist import watchlist_api
     from project_watchlist import auth
-    from project_watchlist.utils import (UserConverter, 
+    from project_watchlist.utils import (UserConverter,
                                          WatchlistConverter,
-                                         ContentConverter, 
-                                         jwt_user_identity_loader, 
+                                         ContentConverter,
+                                         jwt_user_identity_loader,
                                          jwt_user_lookup_loader)
     # register loaders for JWT
     jwt_manager.user_identity_loader(jwt_user_identity_loader)
