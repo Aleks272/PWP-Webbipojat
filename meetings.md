@@ -33,22 +33,28 @@ Database documentation looks good, models are well defined, but `Content` is mis
 ### Action points
 *List here the actions points discussed with assistants*
 
-- Instead of having PublicList and PrivateList separately, save movie/series entries to one list and have a boolean value specifying whether the list is public or private.
+- Instead of having PublicList and PrivateList separately, save movie/series entries to one list and have a boolean value specifying whether the list is public or private.(Done)
 - Update previous plans in wiki according to changes made in later stages of the project.
 - Include genre-field in Content-database model
 
 
 
 ## Meeting 3.
-* **DATE:**
+* **DATE:** 14.3.2025
 * **ASSISTANTS:**
 
 ### Minutes
 *Summary of what was discussed during the meeting*
 
+API implementation in good state, authentication and authorization for watchlist endpoints implemented. Linting was lacking. Circular import problems were reported by pylint, these need to be investigated. The API documentation did not include `/auth`-endpoint, and the documentation regarding watchlist creation was a bit outdated, needs to be updated.
+
 ### Action points
 *List here the actions points discussed with assistants*
-
+- Add instructions for linting and ensure it works (Done)
+- Solve circular imports
+- Update documentation regarding authentication and watchlist endpoints
+- Update code according to Pylint output
+- Add authorization for user modification
 
 
 
