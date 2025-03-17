@@ -2,13 +2,12 @@
 This module defines resources for watchlist
 """
 from flask import Response, json, request, abort
-from flask_restful import Resource
+from flask_restful import Resource, url_for
 from jsonschema import validate, ValidationError
 from werkzeug.exceptions import UnsupportedMediaType, Unauthorized
 from flask_jwt_extended import current_user, jwt_required
 
 from project_watchlist.models import Watchlist, Content
-from project_watchlist.watchlist_api import api
 
 def validate_content(given_ids):
     """
@@ -163,8 +162,8 @@ class PublicWatchlistCollection(Resource):
                 "New watchlist added", 
                 status=201,
                 mimetype="application/json",
-                headers={"Location": api.url_for(
-                    WatchlistItem,
+                headers={"Location": url_for(
+                    "api.watchlistitem",
                     watchlist=new_watchlist
                     )
                 }
@@ -228,8 +227,8 @@ class PrivateWatchlistCollection(Resource):
                 "New watchlist added", 
                 status=201, 
                 mimetype="application/json",
-                headers={"Location": api.url_for(
-                    WatchlistItem,
+                headers={"Location": url_for(
+                    "api.watchlistitem",
                     watchlist=new_watchlist
                     )
                 }

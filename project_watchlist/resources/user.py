@@ -2,14 +2,13 @@
 This modules includes user-related resources
 """
 from flask import Response, json, request, abort
-from flask_restful import Resource
+from flask_restful import Resource, url_for
 from jsonschema import validate, ValidationError
 from werkzeug.exceptions import UnsupportedMediaType
 import mongoengine
 import bcrypt
 
 from project_watchlist.models import Users
-from project_watchlist.watchlist_api import api
 
 class UserItem(Resource):
     # api route: /api/users/<username/
@@ -106,8 +105,8 @@ class UserCollection(Resource):
                 "New user added", 
                 status=201, 
                 mimetype="application/json",
-                headers={"Location": api.url_for(
-                    UserItem,
+                headers={"Location": url_for(
+                    "api.useritem",
                     user=new_user
                     )
                 }

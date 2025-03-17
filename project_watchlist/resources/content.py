@@ -1,11 +1,10 @@
 from flask import Response, json, request, abort
-from flask_restful import Resource
+from flask_restful import Resource, url_for
 from jsonschema import validate, ValidationError
 from werkzeug.exceptions import UnsupportedMediaType
 import mongoengine
 
 from project_watchlist.models import Content, ContentType, Watchlist
-from project_watchlist.watchlist_api import api
 
 class ContentItem(Resource):
     """
@@ -125,8 +124,8 @@ class ContentCollection(Resource):
                 "New content added", 
                 status=201,
                 mimetype="application/json",
-                headers={"Location": api.url_for(
-                    ContentItem,
+                headers={"Location": url_for(
+                    "api.contentitem",
                     content=new_content
                     )
                 }
