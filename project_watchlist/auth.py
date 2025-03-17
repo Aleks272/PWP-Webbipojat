@@ -1,11 +1,11 @@
 """
 This module provides routes for user authentication with JWT
 """
+import json
 from flask import Blueprint, request, Response
 from flask_jwt_extended import create_access_token
 from werkzeug.exceptions import BadRequest, Unauthorized, NotFound, UnsupportedMediaType
 import bcrypt
-import json
 from project_watchlist.models import Users
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")

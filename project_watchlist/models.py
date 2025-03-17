@@ -19,7 +19,7 @@ class Users(Document):
     email = StringField(unique=True)
     password_hash = StringField()
 
-    def to_json(self):
+    def to_json(self, *_args, **_kvargs):
         """
         Transforms this object into a JSON-ready dictionary
 
@@ -46,7 +46,7 @@ class Content(Document):
     name = StringField(unique=True)
     content_type = EnumField(ContentType)
 
-    def to_json(self):
+    def to_json(self, *_args, **_kvargs):
         """
         Transforms this object into a JSON-ready dictionary
 
@@ -80,7 +80,7 @@ class Watchlist(Document):
     person_id = IntField()
     content_ids = ListField(IntField())
 
-    def to_json(self):
+    def to_json(self, *_args, **_kvargs):
         """
         Transforms this object into a JSON-ready dictionary
 
