@@ -1,7 +1,7 @@
 """
 This modules includes user-related resources
 """
-from flask import Response, json, request, abort
+from flask import Response, json, request, abort, jsonify
 from flask_restful import Resource, url_for
 from jsonschema import validate, ValidationError
 from werkzeug.exceptions import UnsupportedMediaType
@@ -19,11 +19,7 @@ class UserItem(Resource):
         api route: /api/users/<username/
         Get user details for user provided in URL (e.g. /api/users/johndoe/) )
         """
-        return Response(
-            json.dumps(user.to_json()),
-            200,
-            mimetype="application/json"
-        )
+        return jsonify(user.to_json())
     def put(self, user):
         """
         Update user details for user provided in URL (e.g. /api/users/johndoe/)

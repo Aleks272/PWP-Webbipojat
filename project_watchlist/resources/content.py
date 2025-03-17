@@ -1,7 +1,7 @@
 """
 Resource classes for handling different types of content (movies/series)
 """
-from flask import Response, json, request, abort
+from flask import Response, json, request, abort, jsonify
 from flask_restful import Resource, url_for
 from jsonschema import validate, ValidationError
 from werkzeug.exceptions import UnsupportedMediaType
@@ -17,11 +17,7 @@ class ContentItem(Resource):
         """
         Get content based on id
         """
-        return Response(
-            json.dumps(content.to_json()),
-            200,
-            mimetype="application/json"
-        )
+        return jsonify(content.to_json())
 
     def put(self, content):
         """
