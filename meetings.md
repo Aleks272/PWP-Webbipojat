@@ -51,9 +51,9 @@ API implementation in good state, authentication and authorization for watchlist
 ### Action points
 *List here the actions points discussed with assistants*
 - Add instructions for linting and ensure it works (Done)
-- Solve circular imports
+- Solve circular imports (Done)
 - Update documentation regarding authentication and watchlist endpoints
-- Update code according to Pylint output
+- Update code according to Pylint output (Done)
 - Add authorization for user modification
 
 
