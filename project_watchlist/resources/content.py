@@ -1,3 +1,6 @@
+"""
+Resource classes for handling different types of content (movies/series)
+"""
 from flask import Response, json, request, abort
 from flask_restful import Resource, url_for
 from jsonschema import validate, ValidationError
@@ -19,7 +22,7 @@ class ContentItem(Resource):
             200,
             mimetype="application/json"
         )
-    
+
     def put(self, content):
         """
         Update existing content
@@ -38,7 +41,7 @@ class ContentItem(Resource):
             )
         except ValidationError as e:
             abort(400, str(e))
-    
+
     def delete(self, content):
         """
         Delete content
@@ -99,9 +102,9 @@ class ContentCollection(Resource):
         for db_content in Content.objects():
             item = db_content.to_json()
             body["content"].append(item)
-            
+
         return Response(json.dumps(body), 200, mimetype="application/json")
-    
+
     def post(self):
         """
         Create a new content entry
@@ -110,10 +113,10 @@ class ContentCollection(Resource):
             raise UnsupportedMediaType
         try:
             validate(request.json, ContentItem.json_schema())
-            
+
             # Convert string to enum value
             content_type = ContentType[request.json["content_type"]]
-            
+
             new_content = Content(
                 name=request.json["name"],
                 content_type=content_type

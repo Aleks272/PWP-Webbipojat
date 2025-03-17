@@ -11,16 +11,23 @@ import bcrypt
 from project_watchlist.models import Users
 
 class UserItem(Resource):
-    # api route: /api/users/<username/
-    # Get user details for user provided in URL (e.g. /api/users/johndoe/) )
+    """
+    Resource class representing one user
+    """
     def get(self, user):
+        """
+        api route: /api/users/<username/
+        Get user details for user provided in URL (e.g. /api/users/johndoe/) )
+        """
         return Response(
             json.dumps(user.to_json()),
             200,
             mimetype="application/json"
         )
-    # Update user details for user provided in URL (e.g. /api/users/johndoe/)
     def put(self, user):
+        """
+        Update user details for user provided in URL (e.g. /api/users/johndoe/)
+        """
         if not request.content_type == "application/json":
             raise UnsupportedMediaType
         try:
@@ -41,18 +48,21 @@ class UserItem(Resource):
             abort(400, str(e))
         except mongoengine.NotUniqueError:
             abort(400, "Database validation error")
-
-    # Delete user details for user provided in URL (e.g. /api/users/johndoe/)
     def delete(self, user):
+        """
+        Delete user details for user provided in URL (e.g. /api/users/johndoe/)
+        """
         user.delete()
         return Response(
             "User deleted",
             status=200,
             mimetype="application/json"
         )
-    # JSON schema for user details
     @staticmethod
     def json_schema():
+        """
+        JSON schema for user details
+        """
         schema = {
             "type": "object",
             "required": ["username", "email", "password"]
@@ -75,18 +85,25 @@ class UserItem(Resource):
         return schema
 
 class UserCollection(Resource):
-    # api route: /api/users/
-    # Get all users in database
+    """
+    Resource class that represents a collection of users
+    """
     def get(self):
+        """
+        api route: /api/users/
+        Get all users in database
+        """
         body = {"users": []}
         #pylint: disable=no-member
         for db_user in Users.objects():
             item = db_user.to_json()
             body["users"].append(item)
-            
+
         return Response(json.dumps(body), 200, mimetype="application/json")
-    # Add new user to database
     def post(self):
+        """
+        Add new user to database
+        """
         if not request.content_type == "application/json":
             raise UnsupportedMediaType
         try:
@@ -103,7 +120,7 @@ class UserCollection(Resource):
             Users.objects.insert(new_user)
             return Response(
                 "New user added", 
-                status=201, 
+                status=201,
                 mimetype="application/json",
                 headers={"Location": url_for(
                     "api.useritem",

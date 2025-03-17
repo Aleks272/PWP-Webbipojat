@@ -225,7 +225,7 @@ class PrivateWatchlistCollection(Resource):
             Watchlist.objects.insert(new_watchlist)
             return Response(
                 "New watchlist added", 
-                status=201, 
+                status=201,
                 mimetype="application/json",
                 headers={"Location": url_for(
                     "api.watchlistitem",
