@@ -1,5 +1,3 @@
 [MESSAGES CONTROL]
-
 disable=no-member,
-        import-outside-toplevel,
-        no-self-use
+        import-outside-toplevel
