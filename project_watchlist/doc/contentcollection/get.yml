@@ -1,0 +1,18 @@
+---
+description: Get all available content
+responses:
+  '200':
+    description: All available content
+    content:
+      application/json:
+        example:
+          - content:
+              content_id: 1
+              name: Interstellar
+              content_type: MOVIE
+          - content:
+              content_id: 2
+              name: Breaking Bad
+              content_type: SERIES
+  '405':
+    description: If the request method is not GET

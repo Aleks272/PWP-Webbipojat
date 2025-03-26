@@ -1,0 +1,19 @@
+# lisätään määrittelyt parametreille yms tänne
+---
+info:
+  contact:
+    email: example@email.com
+    name: PWP-Webbipojat
+    url: https://example.com
+  description: |
+    Watchlist Web API stores a collection of content such as movies and series.
+    Users of the API can create and view watchlists that include any content in the database.
+  license:
+    name: MIT
+    url: https://opensource.org/license/MIT
+  termsOfService: http://example.com
+  title: Watchlist Web API
+  version: 1.0.0
+openapi: 3.0.3
+servers:
+  - url: /api

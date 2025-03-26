@@ -6,6 +6,7 @@ from flask import Flask
 from mongoengine import connect
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
+from flasgger import Swagger
 
 load_dotenv()
 
@@ -40,4 +41,12 @@ def create_app(test_mode=False):
     app.url_map.converters["content"] = ContentConverter
     app.register_blueprint(watchlist_api.api_bp)
     app.register_blueprint(auth.auth_bp)
+    # set up docs
+    app.config["SWAGGER"] = {
+        "title": "Watchlist API",
+        "openapi": "3.0.4",
+        "uiversion": 3,
+        "doc_dir": "project_watchlist/doc"
+    }
+    swagger = Swagger(app, template_file="doc/template.yml")
     return app
