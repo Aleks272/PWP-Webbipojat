@@ -1,0 +1,13 @@
+---
+description: Get user details for user provided in URL
+responses:
+  '200':
+    description: User details
+    content:
+      application/json:
+        example:
+          - email: johndoe@gmail.com
+            person_id: 2
+            username: johndoe
+  '405':
+    description: Method not allowed   

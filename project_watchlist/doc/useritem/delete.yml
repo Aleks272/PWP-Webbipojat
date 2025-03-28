@@ -1,0 +1,7 @@
+---
+description: Delete user provided in URL
+responses:
+  '200':
+    description: User deleted successfully
+  '405':
+    description: Method not allowed     

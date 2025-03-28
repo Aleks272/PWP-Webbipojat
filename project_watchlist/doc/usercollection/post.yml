@@ -1,0 +1,26 @@
+---
+description: Add a new user
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/User'
+      example:
+        username: johndoe
+        email: johndoe@gmail.com
+        password: password123
+responses:
+  '201':
+    description: New user created successfully
+    headers:
+      Location: 
+        description: URI of the new user
+        schema: 
+          type: string
+  '400':
+    description: Bad request
+  '405':
+    description: Method not allowed
+  '415':
+    description: Request content type not JSON

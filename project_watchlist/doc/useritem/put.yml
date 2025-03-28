@@ -1,0 +1,21 @@
+---
+description: Update the details of a user
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/User'
+      example:
+        username: johndoe
+        email: johndoe@gmail.com
+        password: password123
+responses:
+  '200':
+    description: User updated successfully
+  '400':
+    description: Bad request
+  '405':
+    description: Method not allowed
+  '415':
+    description: Request content type not JSON

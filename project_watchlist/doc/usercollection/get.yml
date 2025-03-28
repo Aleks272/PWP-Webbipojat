@@ -1,0 +1,18 @@
+---
+description: Get all users and their information
+responses:
+  '200':
+    description: All users
+    content:
+      application/json:
+        example:
+          - user:
+              email: johndoe@gmail.com
+              person_id: 1
+              username: johndoe
+          - user:
+              email: foobar@icloud.com
+              person_id: 2
+              username: foobar
+  '405':
+    description: Unsupported method

@@ -17,3 +17,17 @@ info:
 openapi: 3.0.3
 servers:
   - url: /api
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: johndoe
+        email:
+          type: string
+          example: johndoe@gmail.com
+        password:
+          type: string
+          example: password123
