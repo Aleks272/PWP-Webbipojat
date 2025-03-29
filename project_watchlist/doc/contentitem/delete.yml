@@ -1,0 +1,11 @@
+---
+description: Delete Content with given ID
+parameters:
+  - $ref: '#/components/parameters/content'
+responses:
+  '200':
+    description: Content was deleted successfully
+  '404':
+    description: Content with given ID does not exist
+  '405':
+    description: Request method was invalid
