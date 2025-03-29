@@ -31,3 +31,14 @@ components:
         password:
           type: string
           example: password123
+    Content:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Interstellar
+        content_type:
+          type: string
+          enum:
+            - SERIES
+            - MOVIE
