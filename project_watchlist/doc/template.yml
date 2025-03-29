@@ -15,8 +15,6 @@ info:
   title: Watchlist Web API
   version: 1.0.0
 openapi: 3.0.3
-servers:
-  - url: /api
 components:
   schemas:
     User:
@@ -42,3 +40,14 @@ components:
           enum:
             - SERIES
             - MOVIE
+      required:
+        - name
+        - content_type
+  parameters:
+    content:
+      description: Unique ID of content
+      in: path
+      name: content
+      required: true
+      schema:
+        type: string
