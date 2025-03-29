@@ -1,0 +1,24 @@
+---
+description: Update content based on ID
+parameters:
+  - $ref: '#/components/parameters/content'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Content'
+      example:
+        content_type: SERIES
+        name: Breaking Bad
+responses:
+  '200':
+    description: Content item successfully updated
+  '404':
+    description: Content with supplied ID does not exist
+  '400':
+    description: Invalid request body
+  '405':
+    description: Request method not allowed
+  '415':
+    description: Request content type was not JSON
