@@ -1,5 +1,7 @@
 ---
 description: Delete user provided in URL
+parameters:
+  - $ref: '#/components/parameters/user'
 responses:
   '200':
     description: User deleted successfully

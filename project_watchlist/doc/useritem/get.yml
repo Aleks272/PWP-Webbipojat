@@ -1,5 +1,7 @@
 ---
 description: Get user details for user provided in URL
+parameters:
+  - $ref: '#/components/parameters/user'
 responses:
   '200':
     description: User details

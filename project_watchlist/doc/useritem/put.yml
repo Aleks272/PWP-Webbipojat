@@ -1,5 +1,7 @@
 ---
 description: Update the details of a user
+parameters:
+  - $ref: '#/components/parameters/user'
 requestBody:
   required: true
   content:

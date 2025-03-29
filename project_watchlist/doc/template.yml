@@ -51,3 +51,10 @@ components:
       required: true
       schema:
         type: string
+    user:
+      description: Unique ID of a user
+      in: path
+      name: user
+      required: true
+      schema:
+        type: string
