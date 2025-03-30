@@ -1,0 +1,33 @@
+---
+description: Get all private watchlists for a specific user
+parameters:
+  - $ref: '#/components/parameters/user'
+security:
+  - bearerAuth: []
+responses:
+  '200':
+    description: List of user's private watchlists
+    content:
+      application/json:
+        example:
+          watchlists:
+            - watchlist_id: 3
+              user_note: "Movies to watch later"
+              person_id: 3
+              content:
+                - content_id: 2
+                  name: "Deadpool"
+                  content_type: "MOVIE"
+            - watchlist_id: 4
+              user_note: "My secret favorites"
+              person_id: 3
+              content:
+                - content_id: 1
+                  name: "Inception"
+                  content_type: "MOVIE"
+  '401':
+    description: Authentication required or not authorized to view these watchlists
+  '404':
+    description: User not found
+  '405':
+    description: Method not allowed

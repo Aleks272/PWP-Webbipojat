@@ -1,0 +1,50 @@
+---
+description: Create a new private watchlist for a user
+parameters:
+  - $ref: '#/components/parameters/user'
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - content_ids
+          - user_note
+        properties:
+          content_ids:
+            type: array
+            description: IDs of content to include in this watchlist
+            items:
+              type: number
+          user_note:
+            type: string
+            description: Note associated with this watchlist
+          public_entry:
+            type: boolean
+            description: Whether this watchlist is publicly visible
+            default: false
+      example:
+        content_ids: [1, 2]
+        user_note: "My private movie collection"
+        public_entry: false
+responses:
+  '201':
+    description: Watchlist created successfully
+    headers:
+      Location:
+        description: URL of the new watchlist
+        schema:
+          type: string
+  '400':
+    description: Invalid request body or content IDs
+  '401':
+    description: Authentication required or not authorized to create watchlists for this user
+  '404':
+    description: User not found
+  '405':
+    description: Method not allowed
+  '415':
+    description: Request content type not JSON
