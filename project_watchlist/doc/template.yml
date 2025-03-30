@@ -58,3 +58,20 @@ components:
       required: true
       schema:
         type: string
+paths:
+  /auth/login/:
+    post:
+      description: Get authentication token for user by supplying valid credentials
+      responses:
+        '200':
+          description: Authentication token for user
+          content:
+            application/json:
+              example:
+                token: token_value
+        '403':
+          description: Invalid credentials
+        '400':
+          description: Username or password not supplied
+        '404':
+          description: User does not exist
