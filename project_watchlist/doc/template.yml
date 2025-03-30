@@ -43,6 +43,26 @@ components:
       required:
         - name
         - content_type
+    Watchlist:
+      type: object
+      properties:
+        content_ids:
+          type: array
+          description: IDs of content to include in this watchlist
+          items:
+            type: number
+          example: [1, 2]
+        user_note:
+          type: string
+          description: Note associated with this watchlist
+          example: "My favorite sci-fi movies"
+        public_entry:
+          type: boolean
+          description: Whether this watchlist is publicly visible
+          example: true
+      required:
+        - content_ids
+        - user_note
   parameters:
     content:
       description: Unique ID of content
@@ -58,6 +78,13 @@ components:
       required: true
       schema:
         type: string
+      watchlist:
+        description: Unique ID of a watchlist
+        in: path
+        name: watchlist
+        required: true
+        schema:
+          type: string
 paths:
   /auth/login/:
     post:
@@ -75,3 +102,4 @@ paths:
           description: Username or password not supplied
         '404':
           description: User does not exist
+

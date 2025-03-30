@@ -1,0 +1,24 @@
+---
+description: Get details for a specific watchlist
+parameters:
+  - $ref: '#/components/parameters/watchlist'
+responses:
+  '200':
+    description: Watchlist details
+    content:
+      application/json:
+        example:
+          watchlist_id: 1
+          user_note: "My favorite sci-fi movies"
+          person_id: 3
+          content:
+            - content_id: 1
+              name: "Inception"
+              content_type: "MOVIE"
+            - content_id: 2
+              name: "Interstellar"
+              content_type: "MOVIE"
+  '404':
+    description: Watchlist with the given ID does not exist
+  '405':
+    description: Method not allowed

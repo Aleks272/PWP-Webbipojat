@@ -1,0 +1,40 @@
+---
+description: Update an existing watchlist
+parameters:
+  - $ref: '#/components/parameters/watchlist'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - content_ids
+          - user_note
+        properties:
+          content_ids:
+            type: array
+            description: IDs of content to include in this watchlist
+            items:
+              type: number
+          user_note:
+            type: string
+            description: Note associated with this watchlist
+          public_entry:
+            type: boolean
+            description: Whether this watchlist is publicly visible
+      example:
+        content_ids: [1, 2]
+        user_note: "My favorite sci-fi movies"
+        public_entry: true
+responses:
+  '200':
+    description: Watchlist successfully updated
+  '400':
+    description: Invalid request body or content IDs
+  '404':
+    description: Watchlist with the given ID does not exist
+  '405':
+    description: Method not allowed
+  '415':
+    description: Request content type not JSON
