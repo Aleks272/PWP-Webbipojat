@@ -72,19 +72,19 @@ components:
       schema:
         type: string
     user:
-      description: Unique ID of a user
+      description: Username of the user
       in: path
       name: user
       required: true
       schema:
         type: string
-      watchlist:
-        description: Unique ID of a watchlist
-        in: path
-        name: watchlist
-        required: true
-        schema:
-          type: string
+    watchlist:
+      description: Unique ID of a watchlist
+      in: path
+      name: watchlist
+      required: true
+      schema:
+        type: string
 paths:
   /auth/login/:
     post:

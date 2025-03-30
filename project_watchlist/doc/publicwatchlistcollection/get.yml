@@ -1,0 +1,32 @@
+---
+description: Get all public watchlists for a specific user
+parameters:
+  - $ref: '#/components/parameters/user'
+responses:
+  '200':
+    description: List of user's public watchlists
+    content:
+      application/json:
+        example:
+          watchlists:
+            - watchlist_id: 1
+              user_note: "My favorite sci-fi movies"
+              person_id: 3
+              content:
+                - content_id: 1
+                  name: "Inception"
+                  content_type: "MOVIE"
+                - content_id: 2
+                  name: "Interstellar"
+                  content_type: "MOVIE"
+            - watchlist_id: 2
+              user_note: "TV Shows to watch"
+              person_id: 3
+              content:
+                - content_id: 3
+                  name: "Breaking Bad"
+                  content_type: "SERIES"
+  '404':
+    description: User not found
+  '405':
+    description: Method not allowed
