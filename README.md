@@ -24,6 +24,11 @@ After cloning repo
 
 To run the API server, you can set the environment variable `FLASK_APP` to `project_watchlist`, and then execute command `flask run` in the root folder of the project.
 
+```console
+set FLASK_APP=project_watchlist
+flask run
+```
+
 Another way of running the API is to use the command `flask --app=project_watchlist run` in the project root folder.
 
 # Testing
