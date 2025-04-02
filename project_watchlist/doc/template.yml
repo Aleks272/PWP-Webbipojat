@@ -85,6 +85,10 @@ components:
       required: true
       schema:
         type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
 paths:
   /auth/login/:
     post:
