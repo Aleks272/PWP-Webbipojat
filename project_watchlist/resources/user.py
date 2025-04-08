@@ -4,9 +4,10 @@ This modules includes user-related resources
 from flask import Response, json, request, abort, jsonify
 from flask_restful import Resource, url_for
 from jsonschema import validate, ValidationError
-from werkzeug.exceptions import UnsupportedMediaType
+from werkzeug.exceptions import UnsupportedMediaType, Unauthorized
 import mongoengine
 import bcrypt
+from flask_jwt_extended import jwt_required, current_user
 
 from project_watchlist.models import Users
 
@@ -20,12 +21,15 @@ class UserItem(Resource):
         Get user details for user provided in URL (e.g. /api/users/johndoe/) )
         """
         return jsonify(user.to_json())
+    @jwt_required()
     def put(self, user):
         """
         Update user details for user provided in URL (e.g. /api/users/johndoe/)
         """
         if not request.content_type == "application/json":
             raise UnsupportedMediaType
+        if not current_user.person_id == user.person_id:
+            raise Unauthorized
         try:
             validate(request.json, UserItem.json_schema())
             salt = bcrypt.gensalt()
@@ -44,10 +48,13 @@ class UserItem(Resource):
             abort(400, str(e))
         except mongoengine.NotUniqueError:
             abort(400, "Database validation error")
+    @jwt_required()
     def delete(self, user):
         """
         Delete user details for user provided in URL (e.g. /api/users/johndoe/)
         """
+        if not current_user.person_id == user.person_id:
+            raise Unauthorized
         user.delete()
         return Response(
             "User deleted",

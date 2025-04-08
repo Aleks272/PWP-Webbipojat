@@ -5,9 +5,11 @@ import json
 import pytest
 import mongoengine
 from werkzeug.datastructures import Headers
+from flask_jwt_extended import create_access_token
 
 from mockdata import populate
 from project_watchlist import create_app
+from project_watchlist.models import Users
 
 @pytest.fixture(scope="module")
 def client():
@@ -131,8 +133,13 @@ class TestUserItem():
             "email": "foobar@hotmail.com",
             "password": "password"
         }
+        user = Users.objects(username="foobar").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Authorization": f"Bearer {access_token}"
+        })
         res = client.put(self.RESOURCE_URL,
-                         json=data)
+                         json=data, headers=headers)
         # check that the status is correct
         assert res.status_code == 200
         # check that the the data is updated
@@ -144,9 +151,15 @@ class TestUserItem():
         """
         Testing that modification fails with invalid media type
         """
+        user = Users.objects(username="foobar").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "text"
+        })
         res = client.put(self.RESOURCE_URL,
                          data="testdata",
-                         headers=Headers({"Content-Type": "text"}))
+                         headers=headers)
         assert res.status_code == 415
 
     def test_modify_user_with_missing_fields(self, client):
@@ -156,7 +169,12 @@ class TestUserItem():
         data = {
             "username": "foobar"
         }
-        res = client.put(self.RESOURCE_URL, json=data)
+        user = Users.objects(username="foobar").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Authorization": f"Bearer {access_token}"
+        })
+        res = client.put(self.RESOURCE_URL, json=data, headers=headers)
         assert res.status_code == 400
 
     def test_modify_user_with_existing_username(self, client):
@@ -168,15 +186,53 @@ class TestUserItem():
             "email": "foobar@icloud.com",
             "password": "password"
         }
-        res = client.put(self.RESOURCE_URL, json=data)
+        user = Users.objects(username="foobar").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Authorization": f"Bearer {access_token}"
+        })
+        res = client.put(self.RESOURCE_URL, json=data, headers=headers)
         assert res.status_code == 400
 
-    def test_delete_nonexistent_user(self, client):
-        res = client.delete(self.WRONG_RESOURCE_URL)
-        assert res.status_code == 404
+    def test_modify_user_with_invalid_authorization(self, client):
+        """
+        Test that modifying user with invalid token fails
+        """
+        data = {
+            "username": "foobar",
+            "email": "foobar@hotmail.com",
+            "password": "password1"
+        }
+        user = Users.objects(username="elonmusk").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Authorization": f"Bearer {access_token}"
+        })
+        res = client.put(self.RESOURCE_URL, json=data, headers=headers)
+        assert res.status_code == 401
+
+    def test_delete_with_invalid_authorization(self, client):
+        """
+        Test that we cannot delete a user with invalid token
+        """
+        user = Users.objects(username="elonmusk").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Authorization": f"Bearer {access_token}"
+        })
+        res = client.delete(self.RESOURCE_URL, headers=headers)
+        assert res.status_code == 401
 
     def test_delete_existing_user(self, client):
-        res = client.delete(self.RESOURCE_URL)
+        """
+        Test that we can delete a user with valid token
+        """
+        user = Users.objects(username="foobar").first()
+        access_token = create_access_token(user)
+        headers = Headers({
+            "Authorization": f"Bearer {access_token}"
+        })
+        res = client.delete(self.RESOURCE_URL, headers=headers)
         assert res.status_code == 200
         # ensure that the user was deleted
         res = client.get(self.RESOURCE_URL)
