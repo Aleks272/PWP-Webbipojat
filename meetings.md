@@ -59,15 +59,22 @@ API implementation in good state, authentication and authorization for watchlist
 
 
 ## Meeting 4.
-* **DATE:**
+* **DATE:** 11.4.2025
 * **ASSISTANTS:**
 
 ### Minutes
 *Summary of what was discussed during the meeting*
 
+Documentation for the API done, hypermedia not yet implemented. Will need to decide whether or not implement it or focus more on the client and auxiliary service. State diagram for the hypermedia good, transition from content item to private or public watchlist should be the other way around (link from watchlist to content items instead). 
+
+Minor corrections for documentation could be done: status 204 should be used more to indicate a successful operation without returning content. Response content examples should be documented as well, if there are any. Status 405 is used in many places but it might not be relevant.
+
 ### Action points
 *List here the actions points discussed with assistants*
 
+- Decide if hypermedia will be implemented
+- Check if status number 405 is appropriate for endpoints
+- Use status 204 for endpoints that return no content.
 
 
 
