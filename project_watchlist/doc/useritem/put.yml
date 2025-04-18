@@ -2,6 +2,8 @@
 description: Update the details of a user
 parameters:
   - $ref: '#/components/parameters/user'
+security:
+  - bearerAuth: []
 requestBody:
   required: true
   content:
@@ -21,3 +23,5 @@ responses:
     description: Method not allowed
   '415':
     description: Request content type not JSON
+  '401':
+    description: Not authorized to modify this user
