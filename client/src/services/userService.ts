@@ -3,11 +3,12 @@ import 'axios'
 
 import { API_URL } from '../constants'
 import axios, { AxiosResponse } from 'axios'
+import { User } from '../types/User'
 
 const BASE_URL = `${API_URL}/users`
 
 // get user data based on username
-const getUser = async (username: string): Promise<AxiosResponse> => (await axios.get(`${BASE_URL}/${username}/`)).data
+const getUser = async (username: string): Promise<User> => (await axios.get(`${BASE_URL}/${username}/`)).data
 
 export default {
     getUser
