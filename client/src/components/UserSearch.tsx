@@ -21,16 +21,19 @@ const UserInfo = (props: UserInfoProps) => {
 const UserSearch = () => {
 
     const [searchName, setSearchName] = useState<string>('')
-    const [userInfo, setUserInfo] = useState<User>()
+    const [userInfo, setUserInfo] = useState<User|null>()
+    const [showUserNotFound, setShowUserNotFound] = useState<boolean>(false)
 
     const search = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
             const res = await userService.getUser(searchName)
             setUserInfo(res)
+            setShowUserNotFound(false)
         }
         catch(e) {
-            console.log(e)
+            setShowUserNotFound(true)
+            setUserInfo(null)
         }
         setSearchName('')
     }
@@ -46,6 +49,10 @@ const UserSearch = () => {
                 <input
                     type="submit"/>
             </form>
+            {showUserNotFound ? 
+            <p style={{color: '#6d6d6d'}}>
+                User not found
+            </p> : null}
             {userInfo ? <UserInfo user={userInfo}/> : null}
             {userInfo ? <UserPublicWatchlists 
                             username={userInfo.username}/> : null}
