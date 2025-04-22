@@ -47,7 +47,7 @@ export const UserPublicWatchlists = (props: UserPublicWatchlistsProps) => {
             }
         }
         effect()
-    },[])
+    },[props.username])
 
     return(
         <>
