@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import userService from '../services/userService'
 import { User } from '../types/User'
+import {UserPublicWatchlists} from './UserPublicWatchlists'
 
 interface UserInfoProps {
     user: User
@@ -46,6 +47,8 @@ const UserSearch = () => {
                     type="submit"/>
             </form>
             {userInfo ? <UserInfo user={userInfo}/> : null}
+            {userInfo ? <UserPublicWatchlists 
+                            username={userInfo.username}/> : null}
         </>
     )
 }
