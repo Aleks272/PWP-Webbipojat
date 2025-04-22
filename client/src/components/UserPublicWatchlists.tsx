@@ -10,11 +10,25 @@ interface WatchlistItemProps {
     watchlist: Watchlist
 }
 
+interface WatchlistCollectionProps {
+    watchlists: [Watchlist]
+}
+
 const WatchlistItem = (props: WatchlistItemProps) => {
     return (
-        <>
+        <li>
             <p>{props.watchlist.user_note}</p>
-        </>
+        </li>
+    )
+}
+
+const WatchlistCollection = (props: WatchlistCollectionProps) => {
+    return (
+        <ul>
+            {props.watchlists.map(watchlist => 
+            <WatchlistItem key={watchlist.watchlist_id}
+                           watchlist={watchlist}/>)}
+        </ul>
     )
 }
 
@@ -38,9 +52,7 @@ export const UserPublicWatchlists = (props: UserPublicWatchlistsProps) => {
     return(
         <>
         <h3>{props.username}'s public Watchlists</h3>
-         {watchlists ? watchlists.map(watchlist => 
-            <WatchlistItem key={watchlist.watchlist_id} watchlist={watchlist}/>)
-             : null}
+         {watchlists ? <WatchlistCollection watchlists={watchlists}/> : null}
         </>
     )
 
