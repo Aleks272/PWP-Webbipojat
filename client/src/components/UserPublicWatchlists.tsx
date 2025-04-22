@@ -11,30 +11,36 @@ interface WatchlistItemProps {
 }
 
 interface WatchlistCollectionProps {
-    watchlists: [Watchlist]
+    watchlists: Watchlist[]
 }
 
 const WatchlistItem = (props: WatchlistItemProps) => {
     return (
-        <li>
-            <p>{props.watchlist.user_note}</p>
-        </li>
+        <div>
+            <p>Note: {props.watchlist.user_note}</p>
+            <h4>Content on list</h4>
+            <ul>
+            {props.watchlist.content.map(contentItem => {
+                return <li>{contentItem.name}</li>
+            })}
+            </ul>
+        </div>
     )
 }
 
 const WatchlistCollection = (props: WatchlistCollectionProps) => {
     return (
-        <ul>
+        <>
             {props.watchlists.map(watchlist => 
             <WatchlistItem key={watchlist.watchlist_id}
                            watchlist={watchlist}/>)}
-        </ul>
+        </>
     )
 }
 
 export const UserPublicWatchlists = (props: UserPublicWatchlistsProps) => {
 
-    const [watchlists, setWatchlists] = useState<[Watchlist]|null>()
+    const [watchlists, setWatchlists] = useState<Watchlist[]|null>()
 
     useEffect(() => {
         const effect = async () => {
