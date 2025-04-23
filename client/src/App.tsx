@@ -4,10 +4,16 @@ import UserSearch from "./components/UserSearch"
 import './styles/App.css'
 import Login from "./components/Login"
 
-export enum AppState {
+export enum AppViewState {
   SEARCH,
   LOGIN,
   PROFILE
+}
+
+export interface AppState {
+  isLoggedIn: boolean
+  currentView: AppViewState
+  username: string|null
 }
 
 interface AppViewProps {
@@ -16,10 +22,11 @@ interface AppViewProps {
 }
 
 const AppView = (props: AppViewProps) => {
-  switch(props.appState) {
-    case AppState.LOGIN:
-      return <Login setAppState={props.setAppState}/>
-    case AppState.PROFILE:
+  switch(props.appState.currentView) {
+    case AppViewState.LOGIN:
+      return <Login 
+              setAppState={props.setAppState}/>
+    case AppViewState.PROFILE:
       return <></>
     default:
       return <UserSearch/>
@@ -28,19 +35,32 @@ const AppView = (props: AppViewProps) => {
 
 function App() {
 
-  const [appState, setAppState] = useState<AppState>(AppState.SEARCH)
+  const [appState, setAppState] = useState<AppState>({
+    isLoggedIn: false,
+    currentView: AppViewState.SEARCH,
+    username: null
+  })
 
   return (
     <>
       <div className='header-container'>
-        <h1 onClick={() => setAppState(AppState.SEARCH)}>
+        <h1 onClick={() => setAppState({...appState, currentView: AppViewState.SEARCH})}>
           Watchlists
         </h1>
-        <button onClick={() => setAppState(AppState.LOGIN)}>
+        <button onClick={() => setAppState({...appState, currentView: AppViewState.LOGIN})}>
           Login
         </button>
       </div>
       <AppView appState={appState} setAppState={setAppState}/>
+      <footer>
+        {appState.isLoggedIn ?
+         <button onClick={() => 
+          setAppState({
+            ...appState,
+            currentView: AppViewState.PROFILE})}>
+          My profile</button> :
+        null}
+      </footer>
     </>
   )
 }

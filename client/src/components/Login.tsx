@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import '../styles/Login.css'
 import authService from '../services/authService'
-import { AppState } from '../App'
+import { AppState, AppViewState } from '../App'
 
 interface LoginProps {
     setAppState: React.Dispatch<AppState>
@@ -17,7 +17,11 @@ const Login = (props: LoginProps) => {
         event.preventDefault()
         try {
             await authService.login({username, password})
-            props.setAppState(AppState.PROFILE)
+            props.setAppState({
+                currentView: AppViewState.PROFILE,
+                isLoggedIn: true,
+                username: username
+            })
         }
         catch(e) {
             console.error(e)
