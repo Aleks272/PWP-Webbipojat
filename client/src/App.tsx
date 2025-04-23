@@ -12,12 +12,13 @@ export enum AppState {
 
 interface AppViewProps {
   appState: AppState
+  setAppState: React.Dispatch<AppState>
 }
 
 const AppView = (props: AppViewProps) => {
   switch(props.appState) {
     case AppState.LOGIN:
-      return <Login/>
+      return <Login setAppState={props.setAppState}/>
     case AppState.PROFILE:
       return <></>
     default:
@@ -39,7 +40,7 @@ function App() {
           Login
         </button>
       </div>
-      <AppView appState={appState}/>
+      <AppView appState={appState} setAppState={setAppState}/>
     </>
   )
 }

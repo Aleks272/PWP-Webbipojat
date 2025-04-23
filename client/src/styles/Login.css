@@ -1,0 +1,9 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    row-gap: 0.5em;
+}
+.login-failed-message {
+    color: #f02626;
+}
