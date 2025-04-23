@@ -47,6 +47,7 @@ const UserSearch = () => {
                     onChange={(e) => setSearchName(e.target.value)}
                     value={searchName}/>
                 <input
+                    value="Search"
                     type="submit"/>
             </form>
             {showUserNotFound ? 
