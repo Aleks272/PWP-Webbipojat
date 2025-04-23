@@ -13,7 +13,6 @@ const WatchlistItem = (props: WatchlistItemProps) => {
                             {props.watchlist.user_note}
                         </b>
                     </summary>
-                    <p>Content on list:</p>
                     <ul>
                     {props.watchlist.content.map(contentItem => {
                         return(

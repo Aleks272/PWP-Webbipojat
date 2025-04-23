@@ -3,6 +3,7 @@ import UserSearch from "./components/UserSearch"
 
 import './styles/App.css'
 import Login from "./components/Login"
+import Profile from "./components/Profile"
 
 export enum AppViewState {
   SEARCH,
@@ -27,7 +28,7 @@ const AppView = (props: AppViewProps) => {
       return <Login 
               setAppState={props.setAppState}/>
     case AppViewState.PROFILE:
-      return <></>
+      return <Profile appState={props.appState}/>
     default:
       return <UserSearch/>
   }
@@ -47,20 +48,17 @@ function App() {
         <h1 onClick={() => setAppState({...appState, currentView: AppViewState.SEARCH})}>
           Watchlists
         </h1>
-        <button onClick={() => setAppState({...appState, currentView: AppViewState.LOGIN})}>
-          Login
-        </button>
-      </div>
-      <AppView appState={appState} setAppState={setAppState}/>
-      <footer>
         {appState.isLoggedIn ?
          <button onClick={() => 
           setAppState({
             ...appState,
             currentView: AppViewState.PROFILE})}>
           My profile</button> :
-        null}
-      </footer>
+        <button onClick={() => setAppState({...appState, currentView: AppViewState.LOGIN})}>
+          Login
+        </button>}
+      </div>
+      <AppView appState={appState} setAppState={setAppState}/>
     </>
   )
 }
