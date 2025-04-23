@@ -32,6 +32,7 @@ const UserSearch = () => {
             setShowUserNotFound(false)
         }
         catch(e) {
+            console.error(e)
             setShowUserNotFound(true)
             setUserInfo(null)
         }
