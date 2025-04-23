@@ -2,7 +2,7 @@
 import 'axios'
 
 import { API_URL } from '../constants'
-import axios, { AxiosResponse } from 'axios'
+import axios from 'axios'
 import { User } from '../types/User'
 
 const BASE_URL = `${API_URL}/users`
