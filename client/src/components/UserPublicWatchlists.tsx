@@ -24,11 +24,18 @@ export const UserPublicWatchlists = (props: UserPublicWatchlistsProps) => {
         effect()
     },[props.username])
 
-    return(
-        <>
-        <h3>{props.username}'s public Watchlists</h3>
-         {watchlists ? <WatchlistCollection watchlists={watchlists}/> : null}
-        </>
-    )
+    if (watchlists) {
+        if (watchlists.length > 0)
+            return (
+            <>
+                <h3>{props.username}'s public Watchlists</h3>
+                <WatchlistCollection watchlists={watchlists}/>
+            </>
+            )
+        return <p style={{color: '#6d6d6d'}}>
+                User {props.username} does not have any public watchlists
+               </p>
+    }
+    return null
 
 }
