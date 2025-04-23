@@ -17,13 +17,22 @@ interface WatchlistCollectionProps {
 const WatchlistItem = (props: WatchlistItemProps) => {
     return (
         <div>
-            <p>Note: {props.watchlist.user_note}</p>
-            <h4>Content on list</h4>
-            <ul>
-            {props.watchlist.content.map(contentItem => {
-                return <li>{contentItem.name}</li>
-            })}
-            </ul>
+            <details>
+                <summary style={{cursor: 'pointer'}}>
+                    <b>
+                        {props.watchlist.user_note}
+                    </b>
+                </summary>
+                <p>Content on list:</p>
+                <ul>
+                {props.watchlist.content.map(contentItem => {
+                    return(
+                    <li key={contentItem.content_id}>
+                        {contentItem.name}
+                    </li>)
+                })}
+                </ul>
+            </details>            
         </div>
     )
 }
