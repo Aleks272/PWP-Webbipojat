@@ -31,7 +31,8 @@ export const UserPublicWatchlists = (props: UserPublicWatchlistsProps) => {
                 <h3>{props.username}'s public Watchlists</h3>
                 <WatchlistCollection
                     inProfile={false} 
-                    watchlists={watchlists}/>
+                    watchlists={watchlists}
+                    deleteWatchlist={() => {}}/>
             </>
             )
         return <p style={{color: '#6d6d6d'}}>
