@@ -1,13 +1,12 @@
 import { Watchlist } from "../types/Watchlist"
 import WatchlistItem from "./WatchlistItem"
-import watchlistService from "../services/watchlistService"
 
 interface WatchlistCollectionProps {
     watchlists: Watchlist[]
     // specifies if displaying collection in profile,
     // used for customized rendering
     inProfile: boolean
-    deleteWatchlist: Function
+    deleteWatchlist: (id: number) => void
 }
 
 const WatchlistCollection = (props: WatchlistCollectionProps) => {

@@ -3,7 +3,7 @@ import { Watchlist } from "../types/Watchlist"
 interface WatchlistItemProps {
     watchlist: Watchlist
     inProfile: boolean
-    deleteWatchlist: Function
+    deleteWatchlist: (id: number) => void
 }
 
 const WatchlistItem = (props: WatchlistItemProps) => {
