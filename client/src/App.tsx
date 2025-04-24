@@ -42,6 +42,14 @@ function App() {
     username: null
   })
 
+  const logout = () => {
+    setAppState({
+      isLoggedIn: false,
+      username: null,
+      currentView: AppViewState.SEARCH
+    })
+  }
+
   return (
     <>
       <div className='header-container'>
@@ -49,11 +57,16 @@ function App() {
           Watchlists
         </h1>
         {appState.isLoggedIn ?
-         <button onClick={() => 
-          setAppState({
-            ...appState,
-            currentView: AppViewState.PROFILE})}>
-          My profile</button> :
+          <div>
+            <button onClick={() => 
+              setAppState({
+              ...appState,
+              currentView: AppViewState.PROFILE})}>
+            My profile</button>
+            <button onClick={() => logout()}>
+              Log out
+            </button>
+          </div> :
         <button onClick={() => setAppState({...appState, currentView: AppViewState.LOGIN})}>
           Login
         </button>}
