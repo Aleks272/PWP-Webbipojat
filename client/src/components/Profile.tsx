@@ -46,11 +46,15 @@ const Profile = (props: ProfileProps) => {
             
             <h3>Your public watchlists</h3>
                 {publicWatchlists ? 
-                <WatchlistCollection watchlists={publicWatchlists}/> :
+                <WatchlistCollection
+                    inProfile={true}
+                    watchlists={publicWatchlists}/> :
                 null}
             <h3>Your private watchlists</h3>
                 {privateWatchlists ? 
-                <WatchlistCollection watchlists={privateWatchlists}/> :
+                <WatchlistCollection
+                    inProfile={true}
+                    watchlists={privateWatchlists}/> :
                 null}
 
         </>

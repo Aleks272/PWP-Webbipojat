@@ -3,6 +3,9 @@ import WatchlistItem from "./WatchlistItem"
 
 interface WatchlistCollectionProps {
     watchlists: Watchlist[]
+    // specifies if displaying collection in profile,
+    // used for customized rendering
+    inProfile: boolean
 }
 
 const WatchlistCollection = (props: WatchlistCollectionProps) => {
@@ -12,7 +15,8 @@ const WatchlistCollection = (props: WatchlistCollectionProps) => {
             <>
                 {props.watchlists.map(watchlist => 
                 <WatchlistItem key={watchlist.watchlist_id}
-                               watchlist={watchlist}/>)}
+                               watchlist={watchlist}
+                               inProfile={props.inProfile}/>)}
             </>
         )
 }
