@@ -1,4 +1,5 @@
-import { AppState, AppViewState } from "../App"
+import { AppState } from "../types/AppState"
+import { AppViewState } from "../enums/AppViewState"
 
 interface TopMenuProps {
     appState: AppState

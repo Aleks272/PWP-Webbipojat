@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import '../styles/Login.css'
 import authService from '../services/authService'
-import { AppState, AppViewState } from '../App'
+import { AppState } from '../types/AppState'
+import { AppViewState } from '../enums/AppViewState'
 
 interface LoginProps {
     setAppState: React.Dispatch<AppState>

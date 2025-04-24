@@ -5,18 +5,8 @@ import './styles/App.css'
 import Login from "./components/Login"
 import Profile from "./components/Profile"
 import TopMenu from "./components/TopMenu"
-
-export enum AppViewState {
-  SEARCH,
-  LOGIN,
-  PROFILE
-}
-
-export interface AppState {
-  isLoggedIn: boolean
-  currentView: AppViewState
-  username: string|null
-}
+import { AppState } from "./types/AppState"
+import { AppViewState } from "./enums/AppViewState"
 
 interface AppViewProps {
   appState: AppState

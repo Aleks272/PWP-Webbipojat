@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { AppState } from "../App"
+import { AppState } from "../types/AppState"
 import { Watchlist } from "../types/Watchlist"
 import { User } from "../types/User"
 import userService from "../services/userService"
