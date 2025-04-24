@@ -11,6 +11,20 @@ interface ProfileProps {
 }
 
 const Profile = (props: ProfileProps) => {
+    const deleteWatchlist = async (watchlist_id: number) => {
+        console.log(watchlist_id)
+        try {
+            await watchlistService.deleteWatchlist(watchlist_id)
+            if (userInfo) {
+                const updated_public_wl = await watchlistService.getPublicWatchlists(userInfo.username)
+                const updated_private_wl = await watchlistService.getPrivateWatchlists(userInfo.username)
+                setPublicWatchlists(updated_public_wl)
+                setPrivateWatchlists(updated_private_wl)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
     
     const [publicWatchlists, setPublicWatchlists] = useState<Watchlist[]>()
     const [privateWatchlists, setPrivateWatchlists] = useState<Watchlist[]>()
@@ -48,13 +62,15 @@ const Profile = (props: ProfileProps) => {
                 {publicWatchlists ? 
                 <WatchlistCollection
                     inProfile={true}
-                    watchlists={publicWatchlists}/> :
+                    watchlists={publicWatchlists}
+                    deleteWatchlist={deleteWatchlist}/> :
                 null}
             <h3>Your private watchlists</h3>
                 {privateWatchlists ? 
                 <WatchlistCollection
                     inProfile={true}
-                    watchlists={privateWatchlists}/> :
+                    watchlists={privateWatchlists}
+                    deleteWatchlist={deleteWatchlist}/> :
                 null}
 
         </>

@@ -3,6 +3,7 @@ import { Watchlist } from "../types/Watchlist"
 interface WatchlistItemProps {
     watchlist: Watchlist
     inProfile: boolean
+    deleteWatchlist: Function
 }
 
 const WatchlistItem = (props: WatchlistItemProps) => {
@@ -15,7 +16,7 @@ const WatchlistItem = (props: WatchlistItemProps) => {
                                 {props.watchlist.user_note}
                             </b>
                             {props.inProfile ? 
-                            <button>Delete</button> :
+                            <button onClick={() => props.deleteWatchlist(props.watchlist.watchlist_id)}>Delete</button> :
                             null}
                     </summary>
                     <ul>
