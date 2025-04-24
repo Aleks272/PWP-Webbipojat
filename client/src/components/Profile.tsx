@@ -12,7 +12,6 @@ interface ProfileProps {
 
 const Profile = (props: ProfileProps) => {
     const deleteWatchlist = async (watchlist_id: number) => {
-        console.log(watchlist_id)
         try {
             await watchlistService.deleteWatchlist(watchlist_id)
             if (userInfo) {
@@ -29,6 +28,9 @@ const Profile = (props: ProfileProps) => {
     const [publicWatchlists, setPublicWatchlists] = useState<Watchlist[]>()
     const [privateWatchlists, setPrivateWatchlists] = useState<Watchlist[]>()
     const [userInfo, setUserInfo] = useState<User>()
+    const [showEmailEdit, setshowEmailEdit] = useState<boolean>(false)
+    const [newEmail, setNewEmail] = useState<string>("")
+    const [password, setpassword] = useState<string>("")
     
     useEffect(() => {
         const effect = async () => {
@@ -46,6 +48,19 @@ const Profile = (props: ProfileProps) => {
         effect()
     },[])
 
+    const changeEmail = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        console.log(newEmail)
+        console.log(password)
+        try {
+            if(userInfo){
+                await userService.putUser(userInfo.username, newEmail, password)
+            }
+        }catch(e){
+            console.error(e)
+        }
+    }
+
     return(
         <>
             <p>Logged in as user {props.appState.username}</p>
@@ -54,6 +69,24 @@ const Profile = (props: ProfileProps) => {
             {userInfo ? 
             <div>
                 <p>Email: {userInfo.email}</p>
+                <button onClick={() => setshowEmailEdit(!showEmailEdit)}>Edit email</button>
+                {showEmailEdit ?
+                    <form
+                        onSubmit={(e) => changeEmail(e)}>
+                        <input
+                        placeholder="new email address"
+                        type="email"
+                        onChange={(e) => setNewEmail(e.target.value)}/>
+                        <p>
+                            Confirm email change with your password
+                        </p>
+                        <input
+                        placeholder="password"
+                        type="password"
+                        onChange={(e) => setpassword(e.target.value)}/>
+                        <button type="submit">Submit</button>
+                    </form>
+                :null}
                 <p>User ID: {userInfo.person_id}</p>
             </div> :
             null}
