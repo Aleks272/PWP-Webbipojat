@@ -50,11 +50,14 @@ const Profile = (props: ProfileProps) => {
 
     const changeEmail = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        console.log(newEmail)
-        console.log(password)
         try {
             if(userInfo){
                 await userService.putUser(userInfo.username, newEmail, password)
+                if(props.appState.username)
+                    setUserInfo(await userService.getUser(props.appState.username))
+                setNewEmail('')
+                setpassword('')
+                setshowEmailEdit(false)
             }
         }catch(e){
             console.error(e)
