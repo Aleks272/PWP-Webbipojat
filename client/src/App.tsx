@@ -4,6 +4,7 @@ import UserSearch from "./components/UserSearch"
 import './styles/App.css'
 import Login from "./components/Login"
 import Profile from "./components/Profile"
+import TopMenu from "./components/TopMenu"
 
 export enum AppViewState {
   SEARCH,
@@ -42,35 +43,9 @@ function App() {
     username: null
   })
 
-  const logout = () => {
-    setAppState({
-      isLoggedIn: false,
-      username: null,
-      currentView: AppViewState.SEARCH
-    })
-  }
-
   return (
     <>
-      <div className='header-container'>
-        <h1 onClick={() => setAppState({...appState, currentView: AppViewState.SEARCH})}>
-          Watchlists
-        </h1>
-        {appState.isLoggedIn ?
-          <div>
-            <button onClick={() => 
-              setAppState({
-              ...appState,
-              currentView: AppViewState.PROFILE})}>
-            My profile</button>
-            <button onClick={() => logout()}>
-              Log out
-            </button>
-          </div> :
-        <button onClick={() => setAppState({...appState, currentView: AppViewState.LOGIN})}>
-          Login
-        </button>}
-      </div>
+      <TopMenu appState={appState} setAppState={setAppState}/>      
       <AppView appState={appState} setAppState={setAppState}/>
     </>
   )
