@@ -7,6 +7,7 @@ from mongoengine import connect
 from dotenv import load_dotenv
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
+from flask_cors import CORS
 
 load_dotenv()
 
@@ -49,4 +50,5 @@ def create_app(test_mode=False):
         "doc_dir": "project_watchlist/doc"
     }
     swagger = Swagger(app, template_file="doc/template.yml")
+    cors = CORS(app)
     return app

@@ -6,3 +6,6 @@ __pycache__/
 *.egg-info
 .coverage
 build/
+
+# client-specific files
+node_modules
