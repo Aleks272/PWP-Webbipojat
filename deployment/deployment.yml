@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: watchlist-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: watchlist
+  template:
+    metadata:
+      labels:
+        app: watchlist
+    spec:
+      containers:
+        - name: watchlist-api
+          image: docker.io/ekelhala/pwp-api-server:latest
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          env:
+            - name: MONGODB_CONNECTION_STRING
+              value: "mongodb+srv://api:ea0bXYcruOV2GdtA@cluster0.ny5tk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+        - name: watchlist-client
+          image: docker.io/ekelhala/pwp-client:latest
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+        - name: reverse-proxy
+          image: docker.io/ekelhala/pwp-nginx-proxy
+          ports:
+            - containerPort: 80
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: watchlist-entrypoint
+spec:
+  type: NodePort
+  selector:
+    app: watchlist
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30001
