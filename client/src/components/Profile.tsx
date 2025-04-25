@@ -6,6 +6,8 @@ import userService from "../services/userService"
 import watchlistService from "../services/watchlistService"
 import WatchlistCollection from "./WatchlistCollection"
 
+import '../styles/Profile.css'
+
 interface ProfileProps {
     appState: AppState
 }
@@ -65,33 +67,41 @@ const Profile = (props: ProfileProps) => {
     }
 
     return(
-        <>
-            <p>Logged in as user {props.appState.username}</p>
-            
+        <div className="profile-container">            
             <h3>User info</h3>
             {userInfo ? 
-            <div>
-                <p>Email: {userInfo.email}</p>
-                <button onClick={() => setshowEmailEdit(!showEmailEdit)}>Edit email</button>
+            <ul>
+                <li>Username: {userInfo.username}</li>
+                <li>
+                    <div className="profile-email-container">
+                        <p>Email: {userInfo.email}</p>
+                        <button onClick={() => setshowEmailEdit(!showEmailEdit)}>
+                            {showEmailEdit ? 'Hide email editor' : 'Edit email'}
+                        </button>
+                    </div>
+                </li>
+                <li>
                 {showEmailEdit ?
-                    <form
-                        onSubmit={(e) => changeEmail(e)}>
-                        <input
-                        placeholder="new email address"
-                        type="email"
-                        onChange={(e) => setNewEmail(e.target.value)}/>
-                        <p>
-                            Confirm email change with your password
-                        </p>
-                        <input
-                        placeholder="password"
-                        type="password"
-                        onChange={(e) => setpassword(e.target.value)}/>
-                        <button type="submit">Submit</button>
-                    </form>
-                :null}
-                <p>User ID: {userInfo.person_id}</p>
-            </div> :
+                            <form
+                                onSubmit={(e) => changeEmail(e)}
+                                className="email-edit-form">
+                                <input
+                                placeholder="new email address"
+                                type="email"
+                                onChange={(e) => setNewEmail(e.target.value)}/>
+                                <p>
+                                    Confirm email change with your password
+                                </p>
+                                <input
+                                placeholder="password"
+                                type="password"
+                                onChange={(e) => setpassword(e.target.value)}/>
+                                <button type="submit">Submit</button>
+                            </form>
+                        :null}
+                </li>
+                <li>User ID: {userInfo.person_id}</li>
+            </ul> :
             null}
             
             <h3>Your public watchlists</h3>
@@ -109,7 +119,7 @@ const Profile = (props: ProfileProps) => {
                     deleteWatchlist={deleteWatchlist}/> :
                 null}
 
-        </>
+        </div>
     )
 }
 

@@ -1,0 +1,16 @@
+.profile-email-container {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5em;
+}
+.email-edit-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    background-color: #c9c9c9;
+    padding: 5px;
+    row-gap: 0.5em;
+}
+.profile-container li {
+    list-style-type: none;
+}

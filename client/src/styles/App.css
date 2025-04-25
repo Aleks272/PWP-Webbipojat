@@ -7,3 +7,9 @@
 .header-container h1 {
     cursor: pointer;
 }
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

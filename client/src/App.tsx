@@ -34,10 +34,10 @@ function App() {
   })
 
   return (
-    <>
+    <div className="main-container">
       <TopMenu appState={appState} setAppState={setAppState}/>      
       <AppView appState={appState} setAppState={setAppState}/>
-    </>
+    </div>
   )
 }
 
