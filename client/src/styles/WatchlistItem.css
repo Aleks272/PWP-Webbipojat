@@ -1,0 +1,16 @@
+.watchlist-item-container {
+    display: flex;
+    width: 100%;
+}
+.watchlist-item-summary {
+    background-color: #c9c9c9;
+    display: inline-flex;
+    column-gap: 2em;
+}
+.watchlist-item-content {
+    display: flex;
+    flex-direction: column;
+}
+.watchlist-item-content li {
+    list-style-type: circle;
+}

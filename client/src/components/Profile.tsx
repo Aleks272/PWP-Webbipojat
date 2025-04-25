@@ -67,7 +67,8 @@ const Profile = (props: ProfileProps) => {
     }
 
     return(
-        <div className="profile-container">            
+        <div className="profile-container">
+            <div className="profile-userinfo-container">
             <h3>User info</h3>
             {userInfo ? 
             <ul>
@@ -103,6 +104,7 @@ const Profile = (props: ProfileProps) => {
                 <li>User ID: {userInfo.person_id}</li>
             </ul> :
             null}
+            </div>
             
             <h3>Your public watchlists</h3>
                 {publicWatchlists ? 

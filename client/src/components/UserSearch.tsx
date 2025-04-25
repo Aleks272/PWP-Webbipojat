@@ -4,6 +4,8 @@ import userService from '../services/userService'
 import { User } from '../types/User'
 import {UserPublicWatchlists} from './UserPublicWatchlists'
 
+import '../styles/UserSearch.css'
+
 interface UserInfoProps {
     user: User
 }
@@ -41,7 +43,9 @@ const UserSearch = () => {
 
     return(
         <>
-            <form onSubmit={(e) => search(e)}>
+            <form 
+                onSubmit={(e) => search(e)}
+                className='user-search-form'>
                 <input 
                     type="text"
                     placeholder="Search for users"
@@ -51,6 +55,7 @@ const UserSearch = () => {
                     value="Search"
                     type="submit"/>
             </form>
+            <div>
             {showUserNotFound ? 
             <p style={{color: '#6d6d6d'}}>
                 User not found
@@ -58,6 +63,7 @@ const UserSearch = () => {
             {userInfo ? <UserInfo user={userInfo}/> : null}
             {userInfo ? <UserPublicWatchlists 
                             username={userInfo.username}/> : null}
+            </div>
         </>
     )
 }
