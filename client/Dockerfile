@@ -6,7 +6,9 @@ RUN npm install && \
 FROM nginx:1.27.5-alpine
 COPY --from=builder /dist /usr/share/nginx/html
 COPY ./configs/nginx.conf /etc/nginx/nginx.conf
-RUN adduser --no-create-home --system www-data && \
-    chown -R www-data /usr/share/nginx/html
+RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx && \
+    chown nginx:root /var/cache/nginx /var/run /var/log/nginx && \
+    chown -R nginx:root /usr/share/nginx/html
 EXPOSE 3000
+USER nginx:root
 CMD ["nginx", "-g", "daemon off;"]

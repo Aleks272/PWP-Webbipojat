@@ -1,7 +1,7 @@
 FROM nginx:alpine
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
-RUN adduser --no-create-home --system www-data && \
-    chown www-data:www-data /var/cache/nginx /var/log/nginx /var/run
-USER www-data
-EXPOSE 80
+RUN  chmod g+rwx /var/cache/nginx /var/run /var/log/nginx && \
+     chown nginx:root /var/cache/nginx /var/run /var/log/nginx
+USER nginx:root
+EXPOSE 8080

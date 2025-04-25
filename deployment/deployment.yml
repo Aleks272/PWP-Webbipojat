@@ -30,7 +30,7 @@ spec:
         - name: reverse-proxy
           image: docker.io/ekelhala/pwp-nginx-proxy
           ports:
-            - containerPort: 80
+            - containerPort: 8080
               protocol: TCP
 ---
 apiVersion: v1
@@ -42,6 +42,6 @@ spec:
   selector:
     app: watchlist
   ports:
-    - port: 80
-      targetPort: 80
+    - port: 8080
+      targetPort: 8080
       nodePort: 30001
