@@ -15,3 +15,7 @@ Run `npm run dev` to run the dev server. The client app is then available in [`h
 ## Linting
 
 The project is configured with ESLint. You can lint it by running `npm run lint` in the root folder of the project.
+
+## Container
+
+The client can be run as a Docker container. Image is available at [https://hub.docker.com/r/ekelhala/pwp-client](https://hub.docker.com/r/ekelhala/pwp-client)
