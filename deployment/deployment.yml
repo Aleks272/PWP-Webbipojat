@@ -21,7 +21,10 @@ spec:
               protocol: TCP
           env:
             - name: MONGODB_CONNECTION_STRING
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: watchlist-secrets
+                  key: MONGODB_CONNECTION_STRING
         - name: watchlist-client
           image: docker.io/ekelhala/pwp-client:latest
           ports:

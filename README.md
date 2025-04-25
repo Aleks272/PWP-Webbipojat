@@ -42,3 +42,19 @@ To run the tests for the API, you should complete following steps:
 # Linting
 
 You can run `pylint` for the API with the command `pylint project_watchlist` in the root folder of this project.
+
+# Deployment
+
+The API and client can be deployed to Rahti by using the configurations provided in folder `deployment`.
+
+The API server needs a secret for connecting to the MongoDB instance. In order to make this work, we need to use Kubernetes secrets. After putting the MongoDB connection string to `.env` file in project root directory, we can use the following command to create a secret that the deployment expects to have in order to connect to MongoDB:
+
+`oc create secret generic watchlist-secrets --from-env-file .env`
+
+Note! The connection string in `.env` should not be in quotes (e.g `" "`) otherwise the deployment fails.
+
+After doing this, we can just create the deployment by running this command (assuming we are still in root folder):
+
+`oc apply -f deployment/deployment.yml`
+
+Done! The deployment should now be created. Our own deployment is running at [https://watchlists-pwp-course-webbipojat.2.rahtiapp.fi/](https://watchlists-pwp-course-webbipojat.2.rahtiapp.fi/)
