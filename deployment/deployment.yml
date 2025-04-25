@@ -31,7 +31,7 @@ spec:
             - containerPort: 3000
               protocol: TCP
         - name: reverse-proxy
-          image: docker.io/ekelhala/pwp-nginx-proxy
+          image: docker.io/ekelhala/pwp-nginx-proxy:latest
           ports:
             - containerPort: 8080
               protocol: TCP
