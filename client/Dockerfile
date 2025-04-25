@@ -6,6 +6,8 @@ RUN npm install && \
 FROM nginx:1.27.5-alpine
 COPY --from=builder /dist /usr/share/nginx/html
 COPY ./configs/nginx.conf /etc/nginx/nginx.conf
+# taken from https://github.com/UniOulu-Ubicomp-Programming-Courses/sensorhub-nginx-sidecar/blob/master/Dockerfile
+# lines 4,5
 RUN chmod g+rwx /var/cache/nginx /var/run /var/log/nginx && \
     chown nginx:root /var/cache/nginx /var/run /var/log/nginx && \
     chown -R nginx:root /usr/share/nginx/html
