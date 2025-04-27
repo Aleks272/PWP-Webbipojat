@@ -43,6 +43,10 @@ To run the tests for the API, you should complete following steps:
 
 You can run `pylint` for the API with the command `pylint project_watchlist` in the root folder of this project.
 
+# Running and linting the client
+
+Instructions for these can be found in the client's [README](./client/README.md)
+
 # Deployment
 
 The API and client can be deployed to Rahti by using the configurations provided in folder `deployment`.
