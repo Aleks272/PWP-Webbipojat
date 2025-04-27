@@ -15,9 +15,15 @@ interface ProfileProps {
 /**
  * A component that shows the profile screen with user information, public and private watchlists.
  * Also includes a form that allows the user to change their email.
+ * @param props Properties of this component, includes the current application state
+ * @returns a Profile component
  */
 const Profile = (props: ProfileProps) => {
 
+    /**
+     * Sends an API request to delete a watchlist specified by `id`
+     * @param watchlist_id the unique id of the watchlist to be deleted
+     */
     const deleteWatchlist = async (watchlist_id: number) => {
         try {
             await watchlistService.deleteWatchlist(watchlist_id)
@@ -55,6 +61,10 @@ const Profile = (props: ProfileProps) => {
         effect()
     },[])
 
+    /**
+     * Sends an API request to change the user's email
+     * @param event the FormEvent that triggered this function
+     */
     const changeEmail = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         try {

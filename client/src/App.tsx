@@ -13,6 +13,13 @@ interface AppViewProps {
   setAppState: React.Dispatch<AppState>
 }
 
+/**
+ * This component returns either Login, Profile or UserSearch component depending on the 
+ * current state of the app.
+ * @param props properties of this component, includes the current state of the app and a function to 
+ *              set the state.
+ * @returns Login, Profile or UserSearch-component, depending on the current app state.
+ */
 const AppView = (props: AppViewProps) => {
   switch(props.appState.currentView) {
     case AppViewState.LOGIN:
@@ -25,6 +32,11 @@ const AppView = (props: AppViewProps) => {
   }
 }
 
+/**
+ * This function is the root component of our app, it draws the TopMenu and an AppView that displays the
+ * needed component to match the current app state.
+ * @returns the main App component
+ */
 function App() {
 
   const [appState, setAppState] = useState<AppState>({
