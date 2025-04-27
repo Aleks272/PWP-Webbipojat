@@ -12,13 +12,11 @@ requestBody:
         content_type: SERIES
         name: Breaking Bad
 responses:
-  '200':
+  '204':
     description: Content item successfully updated
   '404':
     description: Content with supplied ID does not exist
   '400':
     description: Invalid request body
-  '405':
-    description: Request method not allowed
   '415':
     description: Request content type was not JSON

@@ -28,13 +28,11 @@ requestBody:
         user_note: "My favorite sci-fi movies"
         public_entry: true
 responses:
-  '200':
+  '204':
     description: Watchlist successfully updated
   '400':
     description: Invalid request body or content IDs
   '404':
     description: Watchlist with the given ID does not exist
-  '405':
-    description: Method not allowed
   '415':
     description: Request content type not JSON

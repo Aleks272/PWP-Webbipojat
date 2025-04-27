@@ -11,5 +11,3 @@ responses:
           - email: johndoe@gmail.com
             person_id: 2
             username: johndoe
-  '405':
-    description: Method not allowed   

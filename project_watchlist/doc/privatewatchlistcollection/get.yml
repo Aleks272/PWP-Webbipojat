@@ -29,5 +29,4 @@ responses:
     description: Authentication required or not authorized to view these watchlists
   '404':
     description: User not found
-  '405':
-    description: Method not allowed
+ 

@@ -39,11 +39,7 @@ class UserItem(Resource):
             user.username = request.json["username"]
             user.email = request.json["email"]
             user.save()
-            return Response(
-                "User updated",
-                status=200,
-                mimetype="application/json"
-            )
+            return Response(status=204)
         except ValidationError as e:
             abort(400, str(e))
         except mongoengine.NotUniqueError:
@@ -56,11 +52,7 @@ class UserItem(Resource):
         if not current_user.person_id == user.person_id:
             raise Unauthorized
         user.delete()
-        return Response(
-            "User deleted",
-            status=200,
-            mimetype="application/json"
-        )
+        return Response(status=204)
     @staticmethod
     def json_schema():
         """

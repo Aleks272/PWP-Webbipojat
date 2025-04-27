@@ -19,8 +19,8 @@ responses:
         schema: 
           type: string
   '400':
-    description: Bad request
-  '405':
-    description: Method not allowed
+    description: |
+     Request body contained illegal values, 
+     a field was missing, or User with same name already exists.
   '415':
     description: Request content type not JSON

@@ -44,7 +44,5 @@ responses:
     description: Authentication required or not authorized to create watchlists for this user
   '404':
     description: User not found
-  '405':
-    description: Method not allowed
   '415':
     description: Request content type not JSON

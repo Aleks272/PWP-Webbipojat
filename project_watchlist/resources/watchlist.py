@@ -56,11 +56,7 @@ class WatchlistItem(Resource):
             watchlist.user_note = request.json["user_note"]
             watchlist.public_entry = request.json["public_entry"]
             watchlist.save()
-            return Response(
-                "Watchlist updated",
-                status=200,
-                mimetype="application/json"
-            )
+            return Response(status=204)
         except ValidationError as e:
             abort(400, str(e))
 
@@ -72,11 +68,7 @@ class WatchlistItem(Resource):
         :returns: a Response with status code 200 and a message
         """
         watchlist.delete()
-        return Response(
-            "Watchlist deleted",
-            status=200,
-            mimetype="application/json"
-        )
+        return Response(status=204)
 
     @staticmethod
     def json_schema():

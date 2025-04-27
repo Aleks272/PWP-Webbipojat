@@ -14,5 +14,4 @@ responses:
               content_id: 2
               name: Breaking Bad
               content_type: SERIES
-  '405':
-    description: If the request method is not GET
+              

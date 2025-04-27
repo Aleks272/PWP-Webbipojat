@@ -30,11 +30,8 @@ class ContentItem(Resource):
             content.name = request.json["name"]
             content.content_type = ContentType[request.json["content_type"]]
             content.save()
-            return Response(
-                "Content updated",
-                status=200,
-                mimetype="application/json"
-            )
+            return Response(status=204)
+        
         except ValidationError as e:
             abort(400, str(e))
 
@@ -56,11 +53,7 @@ class ContentItem(Resource):
                     watchlist.content_ids.remove(content_id)
                     watchlist.save()
         content.delete()
-        return Response(
-            "Content deleted",
-            status=200,
-            mimetype="application/json"
-        )
+        return Response(status=204)
 
     @staticmethod
     def json_schema():

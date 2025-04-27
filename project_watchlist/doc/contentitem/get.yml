@@ -11,7 +11,5 @@ responses:
           content_id: 0
           name: Deadpool
           content_type: MOVIE
-  '405':
-    description: Request method was not GET
   '404':
     description: Content with supplied ID was not found

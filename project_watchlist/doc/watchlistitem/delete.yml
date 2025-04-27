@@ -3,9 +3,7 @@ description: Delete an existing watchlist
 parameters:
   - $ref: '#/components/parameters/watchlist'
 responses:
-  '200':
+  '204':
     description: Watchlist successfully deleted
   '404':
     description: Watchlist with the given ID does not exist
-  '405':
-    description: Method not allowed

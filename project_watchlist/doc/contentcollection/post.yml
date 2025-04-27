@@ -21,7 +21,5 @@ responses:
     description: |
      Request body contained illegal values, 
      a field was missing, or Content with same name already exists.
-  '405':
-    description: Request method was not POST.
   '415':
     description: Content type of the request is not supported.

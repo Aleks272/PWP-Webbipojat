@@ -28,5 +28,3 @@ responses:
                   content_type: "SERIES"
   '404':
     description: User not found
-  '405':
-    description: Method not allowed

@@ -14,5 +14,4 @@ responses:
               email: foobar@icloud.com
               person_id: 2
               username: foobar
-  '405':
-    description: Unsupported method
+  
