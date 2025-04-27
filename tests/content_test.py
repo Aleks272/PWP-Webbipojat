@@ -54,7 +54,7 @@ class TestContentItem():
             "content_type": "MOVIE"
         }
         res = client.put(self.RESOURCE_URL, json=data)
-        assert res.status_code == 200
+        assert res.status_code == 204
         # check that the content changed
         res = client.get(self.RESOURCE_URL)
         response_body = json.loads(res.data)
@@ -85,7 +85,7 @@ class TestContentItem():
         Test that we can delete existing content
         """
         res = client.delete(self.RESOURCE_URL)
-        assert res.status_code == 200
+        assert res.status_code == 204
         # check that the resource is deleted
         res = client.get(self.RESOURCE_URL)
         assert res.status_code == 404

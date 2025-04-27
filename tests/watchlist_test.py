@@ -316,7 +316,7 @@ class TestWatchListItem(object):
             "public_entry": True
         }
         res = client.put(self.RESOURCE_URL, json=data)
-        assert res.status_code == 200
+        assert res.status_code == 204
         # check that the note changed
         res = client.get(self.RESOURCE_URL)
         response_body = json.loads(res.data)
@@ -371,7 +371,7 @@ class TestWatchListItem(object):
         Check that we can delete an existing list
         """
         res = client.delete(self.RESOURCE_URL)
-        assert res.status_code == 200
+        assert res.status_code == 204
         # check that the resource is gone
         res = client.get(self.RESOURCE_URL)
         assert res.status_code == 404

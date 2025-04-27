@@ -141,7 +141,7 @@ class TestUserItem():
         res = client.put(self.RESOURCE_URL,
                          json=data, headers=headers)
         # check that the status is correct
-        assert res.status_code == 200
+        assert res.status_code == 204
         # check that the the data is updated
         res = client.get(self.RESOURCE_URL)
         response_body = json.loads(res.data)
@@ -233,7 +233,7 @@ class TestUserItem():
             "Authorization": f"Bearer {access_token}"
         })
         res = client.delete(self.RESOURCE_URL, headers=headers)
-        assert res.status_code == 200
+        assert res.status_code == 204
         # ensure that the user was deleted
         res = client.get(self.RESOURCE_URL)
         assert res.status_code == 404
