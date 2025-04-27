@@ -9,7 +9,12 @@ interface LoginProps {
 }
 
 const Login = (props: LoginProps) => {
-    
+    /**
+     * A component that show the login screen with username and password fields, and a "Login"-button.
+     * When the button is clicked, the component uses authService to call the API with the credentials
+     * provided.
+     * If the login fails, shows an error message on top of the fields.
+     */
     const [username, setUsername] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [showLoginError, setShowLoginError] = useState<boolean>(false)

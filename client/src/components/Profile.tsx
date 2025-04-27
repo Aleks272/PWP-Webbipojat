@@ -12,15 +12,20 @@ interface ProfileProps {
     appState: AppState
 }
 
+/**
+ * A component that shows the profile screen with user information, public and private watchlists.
+ * Also includes a form that allows the user to change their email.
+ */
 const Profile = (props: ProfileProps) => {
+
     const deleteWatchlist = async (watchlist_id: number) => {
         try {
             await watchlistService.deleteWatchlist(watchlist_id)
             if (userInfo) {
-                const updated_public_wl = await watchlistService.getPublicWatchlists(userInfo.username)
-                const updated_private_wl = await watchlistService.getPrivateWatchlists(userInfo.username)
-                setPublicWatchlists(updated_public_wl)
-                setPrivateWatchlists(updated_private_wl)
+                const updatedPublicWatchlist = await watchlistService.getPublicWatchlists(userInfo.username)
+                const updatedPrivateWatchlist = await watchlistService.getPrivateWatchlists(userInfo.username)
+                setPublicWatchlists(updatedPublicWatchlist)
+                setPrivateWatchlists(updatedPrivateWatchlist)
             }
         } catch (error) {
             console.error(error)
